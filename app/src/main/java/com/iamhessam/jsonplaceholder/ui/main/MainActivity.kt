@@ -1,4 +1,4 @@
-package com.iamhessam.jsonplaceholder
+package com.iamhessam.jsonplaceholder.ui.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
