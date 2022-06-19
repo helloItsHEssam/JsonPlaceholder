@@ -1,6 +1,6 @@
 package com.iamhessam.jsonplaceholder.ui.main.mvi
 
-interface MviIntent<out A: MviAction> {
+interface MviIntent<out A : MviAction> {
     fun mapToAction(): A
 }
 

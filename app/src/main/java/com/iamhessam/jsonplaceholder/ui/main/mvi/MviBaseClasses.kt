@@ -1,20 +1,13 @@
 package com.iamhessam.jsonplaceholder.ui.main.mvi
 
-import android.util.Log
-import android.util.Log.i
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.consumeAsFlow
-import kotlinx.coroutines.launch
-import java.util.logging.Logger
+import com.iamhessam.jsonplaceholder.utils.extension.mapperActionToResult
+import com.iamhessam.jsonplaceholder.utils.extension.mapperIntentToAction
+import kotlinx.coroutines.flow.*
 
 interface MviViewModel<in I : MviIntent<A>, A : MviAction, out S : MviViewState> {
-
-    val states: Flow<S>
-    fun processorIntents()
+    fun processorIntent(intent: I)
 }
 
 interface MviView<I : MviIntent<A>, A : MviAction, S : MviViewState> {
@@ -22,27 +15,27 @@ interface MviView<I : MviIntent<A>, A : MviAction, S : MviViewState> {
 }
 
 open class BaseViewModel<I : MviIntent<A>, A : MviAction, R : MviResult, S : MviViewState>(
-    private val initialIntent: Class<out I>,
-    initialState: S,
+    private val initialState: S,
     private val reducer: Reducer<S, R>,
+    private val processor: MviActionProcessor<A, R>
 ) : MviViewModel<I, A, S>, ViewModel() {
 
-    private val intentFilter = Channel<I>(Channel.UNLIMITED)
-    private val _state = MutableStateFlow(initialState)
+    private val _intents = MutableStateFlow<I?>(null)
+    private val _states = MutableStateFlow(this.initialState)
 
-    override val states: Flow<S> = this._state
-
-    override fun processorIntents() {
-        viewModelScope.launch {
-            this@BaseViewModel.intentFilter
-                .consumeAsFlow()
-                .collect {
-                    _state = reducer(it.mapToAction())
-            }
-        }
+    init {
+        this._intents
+            .filterNotNull()
+            .mapperIntentToAction()
+            .mapperActionToResult(this.processor)
+            .scan(this.initialState, this.reducer)
+            .distinctUntilChanged()
+            .launchIn(viewModelScope)
     }
 
-    private fun internalLogger(state: S) =  Log.i("newState", "$state")
+    override fun processorIntent(intent: I) {
+        this._intents.value = intent
+    }
 
-    private fun crashHandler(throwable: Throwable): Unit = throw throwable
+    fun states(): Flow<S> = this._states
 }
