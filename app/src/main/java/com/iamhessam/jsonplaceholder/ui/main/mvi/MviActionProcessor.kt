@@ -2,7 +2,7 @@ package com.iamhessam.jsonplaceholder.ui.main.mvi
 
 import kotlinx.coroutines.flow.Flow
 
-abstract class MviActionProcessor<A : MviAction, R : MviResult> : Flow<A> {
+abstract class MviActionProcessor<R : MviResult> {
 
     fun apply(): Flow<R> = this.getActionProcessors()
 

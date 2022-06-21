@@ -7,7 +7,11 @@ import com.iamhessam.jsonplaceholder.ui.main.mvi.MviResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-fun Flow<MviIntent<MviAction>>.mapperIntentToAction(): Flow<MviAction> = map { it.mapToAction() }
+fun Flow<MviIntent<MviAction<MviResult, MviActionProcessor<MviResult>>>>.mapperIntentToAction(): Flow<MviAction<MviResult, MviActionProcessor<MviResult>>> =
+    map { it.mapToAction() }
 
-fun <A : MviAction, R : MviResult> Flow<MviAction>.mapperActionToResult(processor: MviActionProcessor<A, R>) =
+fun <R : MviResult,
+        P : MviActionProcessor<R>,
+        A : MviAction<R, P>>
+        Flow<MviAction<MviResult, MviActionProcessor<MviResult>>>.mapperActionToResult(processor: MviActionProcessor<R>) =
     processor.apply()

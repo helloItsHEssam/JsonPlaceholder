@@ -1,7 +1,6 @@
 package com.iamhessam.jsonplaceholder.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -13,11 +12,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.iamhessam.jsonplaceholder.ui.main.home.models.HomeIntent
 import com.iamhessam.jsonplaceholder.ui.theme.JsonPlaceholderTheme
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.merge
 
 class MainActivity : ComponentActivity() {
+
+//    private val model: HomeModel by HomeModel()
+    fun intents(): Flow<HomeIntent> = merge(
+        initialIntent(),
+        refreshIntent(),
+    )
+
+    private fun initialIntent(): Flow<HomeIntent> = flowOf(HomeIntent.Initial)
+    private fun refreshIntent(): Flow<HomeIntent> = callbackFlow {
+        trySend(HomeIntent.PullToRefresh)
+        awaitClose()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -28,7 +45,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     MainScreen(name = "HEssam") {
-
+                        refreshIntent()
                     }
                 }
             }

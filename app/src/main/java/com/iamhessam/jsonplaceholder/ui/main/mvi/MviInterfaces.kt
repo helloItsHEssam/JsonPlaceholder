@@ -1,10 +1,12 @@
 package com.iamhessam.jsonplaceholder.ui.main.mvi
 
-interface MviIntent<out A : MviAction> {
+interface MviIntent<A : MviAction<MviResult, MviActionProcessor<MviResult>>> {
     fun mapToAction(): A
 }
 
-interface MviAction
+interface MviAction<R: MviResult, out P: MviActionProcessor<R>> {
+    fun mapToProcessor(): P
+}
 
 interface MviResult
 
