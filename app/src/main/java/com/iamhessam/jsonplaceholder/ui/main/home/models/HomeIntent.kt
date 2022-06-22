@@ -2,7 +2,13 @@ package com.iamhessam.jsonplaceholder.ui.main.home.models
 
 import com.iamhessam.jsonplaceholder.ui.main.mvi.*
 
-sealed class HomeAction : HomeAct {
+sealed class HomeResult : MviResult {
+    object Loading : HomeResult()
+    data class Error(val message: String) : HomeResult()
+    data class Success(val response: String) : HomeResult()
+}
+
+sealed class HomeAction : MviAction<HomeResult, HomeProcessor> {
     object Refresh : HomeAction()
     data class LoadComment(val commentId: Int) : HomeAction()
 
@@ -12,9 +18,7 @@ sealed class HomeAction : HomeAct {
     }
 }
 
-typealias HomeAct = MviAction<HomeResult, HomeProcessor>
-
-sealed class HomeIntent : MviIntent<HomeAct> {
+sealed class HomeIntent : MviIntent<HomeResult, HomeProcessor, HomeAction> {
     object Initial : HomeIntent()
     object PullToRefresh : HomeIntent()
     data class LoadComment(val commentId: Int) : HomeIntent()
@@ -23,12 +27,6 @@ sealed class HomeIntent : MviIntent<HomeAct> {
         is Initial, PullToRefresh -> HomeAction.Refresh
         is LoadComment -> HomeAction.LoadComment(this.commentId)
     }
-}
-
-sealed class HomeResult : MviResult {
-    object Loading : HomeResult()
-    data class Error(val message: String) : HomeResult()
-    data class Success(val response: String) : HomeResult()
 }
 
 data class HomeViewState(

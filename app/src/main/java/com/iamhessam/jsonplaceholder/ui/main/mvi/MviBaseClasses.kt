@@ -1,30 +1,27 @@
 package com.iamhessam.jsonplaceholder.ui.main.mvi
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.iamhessam.jsonplaceholder.utils.extension.mapperActionToResult
-import com.iamhessam.jsonplaceholder.utils.extension.mapperIntentToAction
 import kotlinx.coroutines.flow.*
 
-interface MviViewModel<I : MviIntent<MviAction<MviResult, MviActionProcessor<MviResult>>>,
+interface MviViewModel<I : MviIntent<MviAction<MviResult, MviProcessor<MviResult>>>,
         R : MviResult,
-        P : MviActionProcessor<R>,
+        P : MviProcessor<R>,
         A : MviAction<R, P>,
         out S : MviViewState> {
     fun processorIntent(intent: I)
 }
 
-interface MviView<I : MviIntent<MviAction<MviResult, MviActionProcessor<MviResult>>>,
+interface MviView<I : MviIntent<MviAction<MviResult, MviProcessor<MviResult>>>,
         R : MviResult,
-        P : MviActionProcessor<R>,
+        P : MviProcessor<R>,
         A : MviAction<R, P>,
         S : MviViewState> {
     val intents: Flow<I>
 }
 
-open class BaseViewModel<I : MviIntent<MviAction<MviResult, MviActionProcessor<MviResult>>>,
+open class BaseViewModel<I : MviIntent<MviAction<MviResult, MviProcessor<MviResult>>>,
         R : MviResult,
-        P : MviActionProcessor<R>,
+        P : MviProcessor<R>,
         A : MviAction<R, P>,
         S : MviViewState>(
     private val initialState: S,
