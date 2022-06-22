@@ -1,6 +1,7 @@
 package com.iamhessam.jsonplaceholder.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -13,21 +14,30 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.iamhessam.jsonplaceholder.ui.main.home.models.HomeIntent
+import androidx.lifecycle.lifecycleScope
+import com.iamhessam.jsonplaceholder.ui.main.home.models.*
+import com.iamhessam.jsonplaceholder.ui.main.mvi.MviView
 import com.iamhessam.jsonplaceholder.ui.theme.JsonPlaceholderTheme
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.*
 
-class MainActivity : ComponentActivity() {
+class MainActivity() : ComponentActivity(),
+    MviView<HomeResult, HomeProcessor, HomeAction, HomeIntent, HomeViewState> {
 
 //    private val model: HomeModel by HomeModel()
-    fun intents(): Flow<HomeIntent> = merge(
+
+    private val model = HomeModel()
+    override val intents: Flow<HomeIntent> = merge(
         initialIntent(),
-        refreshIntent(),
+        refreshIntent()
     )
+
+    override fun render(state: HomeViewState) {
+        Log.d("new Stateeeeeeee", state.toString())
+    }
+
+    private val btnChannel = Channel<HomeIntent>()
 
     private fun initialIntent(): Flow<HomeIntent> = flowOf(HomeIntent.Initial)
     private fun refreshIntent(): Flow<HomeIntent> = callbackFlow {
@@ -37,6 +47,15 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lifecycleScope.launchWhenStarted {
+            intents.collect(model::processorIntent)
+        }
+
+        lifecycleScope.launchWhenStarted {
+            model.states().collect(::render)
+        }
+
         setContent {
             JsonPlaceholderTheme {
                 // A surface container using the 'background' color from the theme
@@ -45,7 +64,14 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     MainScreen(name = "HEssam") {
-                        refreshIntent()
+//                        val r: Flow<HomeIntent> = callbackFlow {
+//                            trySend(HomeIntent.PullToRefresh)
+//                            awaitClose()
+//                        }
+
+                        model.processorIntent(HomeIntent.PullToRefresh)
+//                        refreshIntent()
+//                        btnChannel.trySend(HomeIntent.PullToRefresh)
                     }
                 }
             }
@@ -58,7 +84,7 @@ fun MainScreen(name: String, click: () -> Unit) {
     Column(Modifier.padding(10.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Button(onClick = click) {
-                Text(text =  name, color = Color.Magenta)
+                Text(text = name, color = Color.Magenta)
                 Spacer(modifier = Modifier.padding(2.dp))
                 Text(text = "Click Here", color = Color.Green)
             }

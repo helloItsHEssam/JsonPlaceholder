@@ -13,12 +13,12 @@ sealed class HomeProcessor : MviProcessor<HomeResult> {
 
     object Refresh : HomeProcessor()
 
-    override fun getActionProcessors(): Flow<HomeResult> = this.process()
+    override fun createResult(): Flow<HomeResult> = this.process()
     private fun process(): Flow<HomeResult> = when (this) {
         is Refresh -> {
             this.repository.getFakeData()
                 .map {
-                    HomeResult.Success(it)
+                    HomeResult.Error(it)
                 }
                 .onStart {
                     HomeResult.Loading

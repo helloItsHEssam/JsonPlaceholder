@@ -15,8 +15,7 @@ interface MviResult
 interface MviViewState
 
 interface MviProcessor<R : MviResult> {
-    fun apply(): Flow<R> = this.getActionProcessors()
-    fun getActionProcessors(): Flow<R>
+    fun createResult(): Flow<R>
 }
 
 typealias Reducer<S, R> = (state: S, result: R) -> S
