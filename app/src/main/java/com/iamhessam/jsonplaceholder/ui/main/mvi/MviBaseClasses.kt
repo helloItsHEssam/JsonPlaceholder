@@ -10,7 +10,6 @@ interface MviViewModel<R : MviResult, P : MviProcessor<R>, A : MviAction<R, P>, 
 }
 
 interface MviView<R : MviResult, P : MviProcessor<R>, A : MviAction<R, P>, I : MviIntent<R, P, A>, S : MviViewState> {
-    val intents: Flow<I>
     fun render(state: S)
 }
 
@@ -31,6 +30,7 @@ open class BaseViewModel<R : MviResult, P : MviProcessor<R>, A : MviAction<R, P>
             .mapperProcessorToResult()
             .scan(this.initialState, this.reducer)
             .distinctUntilChanged()
+            .onEach { this._states.value = it }
             .launchIn(viewModelScope)
     }
 

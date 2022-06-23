@@ -10,11 +10,13 @@ sealed class HomeResult : MviResult {
 
 sealed class HomeAction : MviAction<HomeResult, HomeProcessor> {
     object Refresh : HomeAction()
+    object Init: HomeAction()
     data class LoadComment(val commentId: Int) : HomeAction()
 
     override fun mapToProcessor(): HomeProcessor = when (this) {
         is Refresh -> HomeProcessor.Refresh
-        is LoadComment -> HomeProcessor.Refresh
+        is LoadComment -> HomeProcessor.Init
+        is Init -> HomeProcessor.Init
     }
 }
 
@@ -24,7 +26,8 @@ sealed class HomeIntent : MviIntent<HomeResult, HomeProcessor, HomeAction> {
     data class LoadComment(val commentId: Int) : HomeIntent()
 
     override fun mapToAction(): HomeAction = when (this) {
-        is Initial, PullToRefresh -> HomeAction.Refresh
+        is Initial -> HomeAction.Init
+        is PullToRefresh -> HomeAction.Refresh
         is LoadComment -> HomeAction.LoadComment(this.commentId)
     }
 }

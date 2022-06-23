@@ -20,18 +20,13 @@ import com.iamhessam.jsonplaceholder.ui.main.mvi.MviView
 import com.iamhessam.jsonplaceholder.ui.theme.JsonPlaceholderTheme
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.flow.*
 
 class MainActivity() : ComponentActivity(),
     MviView<HomeResult, HomeProcessor, HomeAction, HomeIntent, HomeViewState> {
 
-//    private val model: HomeModel by HomeModel()
-
     private val model = HomeModel()
-    override val intents: Flow<HomeIntent> = merge(
-        initialIntent(),
-        refreshIntent()
-    )
 
     override fun render(state: HomeViewState) {
         Log.d("new Stateeeeeeee", state.toString())
@@ -39,17 +34,11 @@ class MainActivity() : ComponentActivity(),
 
     private val btnChannel = Channel<HomeIntent>()
 
-    private fun initialIntent(): Flow<HomeIntent> = flowOf(HomeIntent.Initial)
-    private fun refreshIntent(): Flow<HomeIntent> = callbackFlow {
-        trySend(HomeIntent.PullToRefresh)
-        awaitClose()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launchWhenStarted {
-            intents.collect(model::processorIntent)
+            btnChannel.consumeAsFlow().collect(model::processorIntent)
         }
 
         lifecycleScope.launchWhenStarted {
@@ -64,14 +53,7 @@ class MainActivity() : ComponentActivity(),
                     color = MaterialTheme.colors.background
                 ) {
                     MainScreen(name = "HEssam") {
-//                        val r: Flow<HomeIntent> = callbackFlow {
-//                            trySend(HomeIntent.PullToRefresh)
-//                            awaitClose()
-//                        }
-
-                        model.processorIntent(HomeIntent.PullToRefresh)
-//                        refreshIntent()
-//                        btnChannel.trySend(HomeIntent.PullToRefresh)
+                        btnChannel.trySend(HomeIntent.PullToRefresh)
                     }
                 }
             }
