@@ -2,6 +2,7 @@ package com.iamhessam.jsonplaceholder.ui.main.home.models
 
 import com.iamhessam.jsonplaceholder.data.Repository
 import com.iamhessam.jsonplaceholder.ui.main.mvi.MviProcessor
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 
@@ -11,11 +12,32 @@ sealed class HomeProcessor : MviProcessor<HomeResult> {
 
     object Refresh : HomeProcessor()
     object Init : HomeProcessor()
+    object Cancel: HomeProcessor()
+
+
+    var jobs: MutableSet<Flow<HomeResult>> = mutableSetOf()
 
     override fun createResult(): Flow<HomeResult> = this.process()
     private fun process(): Flow<HomeResult> = when (this) {
-        is Refresh -> refreshHandle()
-        is Init -> initHandler()
+        is Refresh -> {
+            val fl = refreshHandle()
+            jobs.add(fl)
+            fl
+        }
+        is Init -> {
+            val fl = initHandler()
+            jobs.add(fl)
+            fl
+        }
+        is Cancel -> {
+
+        }
+    }
+
+    private fun cancelHandler(): Flow<HomeResult> {
+        return flow {
+            throw CancellationException
+        }
     }
 
     private fun initHandler(): Flow<HomeResult> {

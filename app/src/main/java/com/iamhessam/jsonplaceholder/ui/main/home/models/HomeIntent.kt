@@ -11,11 +11,13 @@ sealed class HomeResult : MviResult {
 sealed class HomeAction : MviAction<HomeResult, HomeProcessor> {
     object Refresh : HomeAction()
     object Init: HomeAction()
+    object Cancel: HomeAction()
     data class LoadComment(val commentId: Int) : HomeAction()
 
     override fun mapToProcessor(): HomeProcessor = when (this) {
         is Refresh -> HomeProcessor.Refresh
         is LoadComment -> HomeProcessor.Init
+        is Cancel -> HomeProcessor.Cancel
         is Init -> HomeProcessor.Init
     }
 }
@@ -24,22 +26,25 @@ sealed class HomeIntent : MviIntent<HomeResult, HomeProcessor, HomeAction> {
     object Initial : HomeIntent()
     object PullToRefresh : HomeIntent()
     data class LoadComment(val commentId: Int) : HomeIntent()
+    object Cancel: HomeIntent()
 
     override fun mapToAction(): HomeAction = when (this) {
         is Initial -> HomeAction.Init
         is PullToRefresh -> HomeAction.Refresh
+        is Cancel -> HomeAction.Cancel
         is LoadComment -> HomeAction.LoadComment(this.commentId)
     }
 }
 
 data class HomeViewState(
-    val refreshing: Boolean = false,
+    val refreshing: Boolean = true,
     val data: List<String>? = null,
     val error: String? = null
 ) : MviViewState {
 
     companion object {
         val reducer: Reducer<HomeViewState, HomeResult> = { state, result ->
+
             when (result) {
                 HomeResult.Loading -> state.copy(refreshing = true)
                 is HomeResult.Success -> {
