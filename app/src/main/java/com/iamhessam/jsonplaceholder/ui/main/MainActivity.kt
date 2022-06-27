@@ -45,6 +45,8 @@ class MainActivity() : ComponentActivity(),
             model.states().collect(::render)
         }
 
+        var isOn = false
+
         setContent {
             JsonPlaceholderTheme {
                 // A surface container using the 'background' color from the theme
@@ -53,7 +55,13 @@ class MainActivity() : ComponentActivity(),
                     color = MaterialTheme.colors.background
                 ) {
                     MainScreen(name = "HEssam") {
-                        btnChannel.trySend(HomeIntent.PullToRefresh)
+                        if (isOn) {
+                            btnChannel.trySend(HomeIntent.Cancel)
+                        } else {
+                            btnChannel.trySend(HomeIntent.PullToRefresh)
+                        }
+
+                        isOn = !isOn
                     }
                 }
             }
