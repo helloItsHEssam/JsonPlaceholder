@@ -12,4 +12,5 @@ fun <R: MviResult, P: MviProcessor<R>, A: MviAction<R, P>, I: MviIntent<R, P, A>
 
 fun <R: MviResult, P: MviProcessor<R>, A: MviAction<R, P>> Flow<A>.mapperActionToProcessor(): Flow<P> = map { it.mapToProcessor() }
 
-fun <R: MviResult, P: MviProcessor<R>> Flow<P>.mapperProcessorToResult(): Flow<R> = map { it.createResult().single() }
+fun <R: MviResult, P: MviProcessor<R>> Flow<P>.mapperProcessorToResult(): Flow<R> = map { it.mapToResult() }
+//fun <S: MviViewState, R: MviResult<S>> Flow<R>.mapperResultToViewState(initialState: S): Flow<S> = map { it.mapToViewState(initialState) }

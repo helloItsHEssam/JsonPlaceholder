@@ -1,21 +1,22 @@
 package com.iamhessam.jsonplaceholder.ui.main.mvi
 
-import kotlinx.coroutines.flow.Flow
-
-interface MviIntent<R: MviResult, P: MviProcessor<R>,A : MviAction<R, P>> {
-    fun mapToAction(): A
-}
-
-interface MviAction<R: MviResult, P: MviProcessor<R>> {
-    fun mapToProcessor(): P
-}
-
 interface MviResult
 
 interface MviViewState
 
-interface MviProcessor<R : MviResult> {
-    fun createResult(): Flow<R>
+interface MviIntent<out R: MviResult, out P: MviProcessor<R>,out A : MviAction<R, P>> {
+    fun mapToAction(): A
+    override fun hashCode(): Int
+    val uniqueId: Int
+        get() = hashCode()
+}
+
+interface MviAction<out R: MviResult, out P: MviProcessor<R>> {
+    fun mapToProcessor(): P
+}
+
+interface MviProcessor<out R : MviResult> {
+    suspend fun mapToResult(): R
 }
 
 typealias Reducer<S, R> = (state: S, result: R) -> S

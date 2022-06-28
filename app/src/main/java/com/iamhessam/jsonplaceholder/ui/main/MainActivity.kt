@@ -33,12 +33,14 @@ class MainActivity() : ComponentActivity(),
     }
 
     private val btnChannel = Channel<HomeIntent>()
+    private val btnCancelChannel = Channel<HomeIntent>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launchWhenStarted {
             btnChannel.consumeAsFlow().collect(model::processorIntent)
+            btnCancelChannel.consumeAsFlow().collect(model::cancelIntent)
         }
 
         lifecycleScope.launchWhenStarted {
@@ -54,7 +56,8 @@ class MainActivity() : ComponentActivity(),
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MainScreen(name = "HEssam") {
+                    MainScreen(name = "HEssam", click = {
+                        // Click One
                         if (isOn) {
                             btnChannel.trySend(HomeIntent.Cancel)
                         } else {
@@ -62,6 +65,10 @@ class MainActivity() : ComponentActivity(),
                         }
 
                         isOn = !isOn
+
+                    }) {
+                        // Click Two
+                        model.cancelIntent(HomeIntent.PullToRefresh)
                     }
                 }
             }
@@ -70,13 +77,18 @@ class MainActivity() : ComponentActivity(),
 }
 
 @Composable
-fun MainScreen(name: String, click: () -> Unit) {
+fun MainScreen(name: String, click: () -> Unit, click2: () -> Unit) {
     Column(Modifier.padding(10.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Button(onClick = click) {
                 Text(text = name, color = Color.Magenta)
                 Spacer(modifier = Modifier.padding(2.dp))
                 Text(text = "Click Here", color = Color.Green)
+            }
+            Spacer(modifier = Modifier.padding(2.dp))
+            Button(onClick = click2) {
+                Spacer(modifier = Modifier.padding(2.dp))
+                Text(text = "Click Here dear Hessam", color = Color.Green)
             }
         }
     }

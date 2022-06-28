@@ -28,11 +28,23 @@ sealed class HomeIntent : MviIntent<HomeResult, HomeProcessor, HomeAction> {
     data class LoadComment(val commentId: Int) : HomeIntent()
     object Cancel : HomeIntent()
 
+    override fun hashCode(): Int = when (this) {
+        is Initial -> 1
+        is PullToRefresh -> 2
+        is LoadComment -> 3 + commentId.hashCode()
+        is Cancel -> 4
+    }
+
     override fun mapToAction(): HomeAction = when (this) {
         is Initial -> HomeAction.Init
         is PullToRefresh -> HomeAction.Refresh
         is LoadComment -> HomeAction.LoadComment(this.commentId)
         is Cancel -> HomeAction.Cancel
+    }
+
+    //    TODO: Nothing - clean here
+    override fun equals(other: Any?): Boolean {
+        return (this === other && this.hashCode() == other.hashCode())
     }
 }
 
