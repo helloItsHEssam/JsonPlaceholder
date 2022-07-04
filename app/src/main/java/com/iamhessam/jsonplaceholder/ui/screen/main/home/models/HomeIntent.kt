@@ -1,6 +1,6 @@
-package com.iamhessam.jsonplaceholder.ui.main.home.models
+package com.iamhessam.jsonplaceholder.ui.screen.main.home.models
 
-import com.iamhessam.jsonplaceholder.ui.main.mvi.*
+import com.iamhessam.jsonplaceholder.ui.screen.main.mvi.*
 
 sealed class HomeResult : MviResult {
     object Loading : HomeResult()

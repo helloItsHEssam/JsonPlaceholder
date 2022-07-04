@@ -1,6 +1,6 @@
-package com.iamhessam.jsonplaceholder.ui.main.home.models
+package com.iamhessam.jsonplaceholder.ui.screen.main.home.models
 
-import com.iamhessam.jsonplaceholder.ui.main.mvi.MviProcessor
+import com.iamhessam.jsonplaceholder.ui.screen.main.mvi.MviProcessor
 import kotlinx.coroutines.delay
 
 sealed class HomeProcessor : MviProcessor<HomeResult> {
