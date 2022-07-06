@@ -1,6 +1,5 @@
 package com.iamhessam.jsonplaceholder.ui.screen.main.home
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -11,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
-import com.iamhessam.jsonplaceholder.ui.navigation.BottomBarScreen
+import com.iamhessam.jsonplaceholder.ui.navigation.destination.BottomBarDestination
 
 @Composable
 fun HomeScreen(navController: NavController) {
@@ -23,7 +22,7 @@ fun HomeScreen(navController: NavController) {
     ) {
         Text(
             modifier = Modifier.clickable {
-                navController.navigate(BottomBarScreen.Home.route)
+                navController.navigate(BottomBarDestination.Home.route)
             },
             text = "Home",
             color = Color.White

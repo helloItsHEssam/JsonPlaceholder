@@ -1,4 +1,4 @@
-package com.iamhessam.jsonplaceholder.ui.screen.main.user
+package com.iamhessam.jsonplaceholder.ui.screen.main.profile.user
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -10,21 +10,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
-import com.iamhessam.jsonplaceholder.ui.navigation.Screen
 
 @Composable
 fun UserScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Green),
+            .background(Color.Blue),
         contentAlignment = Alignment.Center
     ) {
         Text(
             modifier = Modifier.clickable {
 //                navController.navigate(Screen.Home.route)
             },
-            text = "Settings",
+            text = "User Profile",
             color = Color.White
         )
     }

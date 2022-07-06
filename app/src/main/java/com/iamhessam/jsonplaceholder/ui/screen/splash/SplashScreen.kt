@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
-import com.iamhessam.jsonplaceholder.ui.navigation.Screen
+import com.iamhessam.jsonplaceholder.ui.navigation.destination.AppDestination
 
 @Composable
 fun SplashScreen(navController: NavController) {
@@ -22,7 +22,7 @@ fun SplashScreen(navController: NavController) {
     ) {
         Text(
             modifier = Modifier.clickable {
-                navController.navigate(Screen.Main.route)
+                navController.navigate(AppDestination.Main.route)
             },
             text = "Splash",
             color = Color.White

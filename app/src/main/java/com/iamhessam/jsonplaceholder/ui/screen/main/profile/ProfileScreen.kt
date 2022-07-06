@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
+import com.iamhessam.jsonplaceholder.ui.navigation.destination.ProfileDestination
 
 @Composable
 fun ProfileScreen(navController: NavController) {
@@ -21,7 +22,7 @@ fun ProfileScreen(navController: NavController) {
     ) {
         Text(
             modifier = Modifier.clickable {
-//                navController.navigate(Screen.Home.route)
+                navController.navigate(ProfileDestination.User.route)
             },
             text = "Profile",
             color = Color.White
