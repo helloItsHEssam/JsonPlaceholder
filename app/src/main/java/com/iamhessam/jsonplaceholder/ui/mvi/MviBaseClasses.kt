@@ -1,6 +1,5 @@
-package com.iamhessam.jsonplaceholder.ui.main.mvi
+package com.iamhessam.jsonplaceholder.ui.mvi
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.iamhessam.jsonplaceholder.utils.extension.mapperActionToProcessor

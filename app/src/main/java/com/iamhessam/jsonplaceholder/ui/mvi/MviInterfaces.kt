@@ -1,4 +1,4 @@
-package com.iamhessam.jsonplaceholder.ui.main.mvi
+package com.iamhessam.jsonplaceholder.ui.mvi
 
 interface MviResult
 
