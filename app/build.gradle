@@ -130,8 +130,6 @@ dependencies {
 
     // datastore
     implementation "androidx.datastore:datastore-preferences:$datastore_version"
-    // proto DataStore
-    implementation "androidx.datastore:datastore:$datastore_version"
 
     // kotlin_serialization
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlin_serialization_version"
