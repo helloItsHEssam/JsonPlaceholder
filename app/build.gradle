@@ -80,7 +80,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerExtensionVersion = "1.2.0"
     }
 
     packagingOptions {
