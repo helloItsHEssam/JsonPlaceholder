@@ -1,6 +1,5 @@
 package com.iamhessam.jsonplaceholder.ui.screen.main.home.models
 
-import android.util.Log
 import com.iamhessam.jsonplaceholder.data.Repository
 import com.iamhessam.jsonplaceholder.mvi.MviProcessor
 import kotlinx.coroutines.delay
@@ -29,7 +28,7 @@ sealed class HomeProcessor : MviProcessor<HomeResult>() {
 
     private fun handlerInit(): HomeResult {
         runBlocking {
-//            this@HomeProcessor.repository.local.prefsStore.updateNightMode()
+            this@HomeProcessor.repository.local.prefsStore.updateNightMode()
         }
 
         return HomeResult.Error("Hello Message Error")

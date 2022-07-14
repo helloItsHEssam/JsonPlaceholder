@@ -17,7 +17,7 @@ import com.iamhessam.jsonplaceholder.ui.theme.appColors
 
 @Composable
 fun SplashScreen(navController: NavController) {
-    val viewModel = HomeModel()
+//    val viewModel = HomeModel()
 
     Box(
         modifier = Modifier
@@ -27,7 +27,7 @@ fun SplashScreen(navController: NavController) {
     ) {
         Text(
             modifier = Modifier.clickable {
-                viewModel.processorIntent(HomeIntent.Initial)
+//                viewModel.processorIntent(HomeIntent.Initial)
 //                navController.navigate(AppDestination.Main.route)
             },
             text = "Splash",

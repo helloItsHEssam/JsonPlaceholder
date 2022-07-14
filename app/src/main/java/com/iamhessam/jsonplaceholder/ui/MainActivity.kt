@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.iamhessam.jsonplaceholder.data.Repository
-import com.iamhessam.jsonplaceholder.data.local.LocalRepository
 import com.iamhessam.jsonplaceholder.mvi.MviView
 import com.iamhessam.jsonplaceholder.ui.navigation.graph.NavGraph
 import com.iamhessam.jsonplaceholder.ui.screen.main.home.models.*
@@ -16,6 +15,7 @@ import com.iamhessam.jsonplaceholder.ui.theme.JsonPlaceholderTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity(),
     private val model: HomeModel by viewModels()
 
     @Inject
-    lateinit var repo: LocalRepository
+    lateinit var repo: Repository
 
     override fun render(state: HomeViewState) {
         Log.d("new Stateeeeeeee", state.toString())
@@ -36,10 +36,6 @@ class MainActivity : ComponentActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        repo.sample()
-//        repo.local.sample()
-//        repo.local.appDB.sample()
 
 //        runBlocking {
 //            repo.local.prefsStore.updateNightMode()

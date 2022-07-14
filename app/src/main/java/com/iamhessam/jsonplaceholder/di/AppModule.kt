@@ -5,8 +5,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
-import com.iamhessam.jsonplaceholder.data.local.datastore.preferences.PrefsStore
-import com.iamhessam.jsonplaceholder.data.local.datastore.preferences.PrefsStoreImpl
 import com.iamhessam.jsonplaceholder.data.local.db.room.AppDB
 import dagger.Module
 import dagger.Provides
@@ -19,29 +17,23 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class AppModule {
 
-    // room DB
-//    @Singleton
-//    @Provides
-//    fun provideAppDB(@ApplicationContext appContext: Context): AppDB {
-//        return Room
-//            .databaseBuilder(appContext, AppDB::class.java, "db")
-//            .build()
-//    }
+    // Room DB
+    @Singleton
+    @Provides
+    fun provideAppDB(@ApplicationContext appContext: Context): AppDB {
+        return Room
+            .databaseBuilder(appContext, AppDB::class.java, "db")
+            .build()
+    }
 
-//    // dataStore
-//    private val Context.dataStore by preferencesDataStore("app_preferences")
-//
-//    @Provides
-//    @Singleton
-//    fun provideAppDataStore(@ApplicationContext appContext: Context): DataStore<Preferences> {
-//        return appContext.dataStore
-//    }
-//
-//    @Provides
-//    @Singleton
-//    fun providePrefsStore(): PrefsStore {
-//        return PrefsStoreImpl()
-//    }
+    // DataStore
+    private val Context.dataStore by preferencesDataStore("app_preferences")
 
-    // network Connectivity di
+    @Provides
+    @Singleton
+    fun provideAppDataStore(@ApplicationContext appContext: Context): DataStore<Preferences> {
+        return appContext.dataStore
+    }
+
+//     network Connectivity di
 }

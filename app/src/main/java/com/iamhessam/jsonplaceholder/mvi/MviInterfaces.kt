@@ -1,5 +1,7 @@
 package com.iamhessam.jsonplaceholder.mvi
 
+import dagger.hilt.android.AndroidEntryPoint
+
 interface MviResult
 
 interface MviViewState

@@ -2,13 +2,18 @@ package com.iamhessam.jsonplaceholder.mvi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.iamhessam.jsonplaceholder.data.Repository
 import com.iamhessam.jsonplaceholder.utils.extension.mapperActionToProcessor
 import com.iamhessam.jsonplaceholder.utils.extension.mapperIntentToAction
 import com.iamhessam.jsonplaceholder.utils.extension.mapperProcessorToResult
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 interface MviViewModel<R : MviResult, P : MviProcessor<R>, A : MviAction<R, P>, I : MviIntent<R, P, A>, S : MviViewState> {
     fun processorIntent(intent: I)
@@ -19,7 +24,9 @@ interface MviView<R : MviResult, P : MviProcessor<R>, A : MviAction<R, P>, I : M
     fun render(state: S)
 }
 
-open class BaseViewModel<R : MviResult, P : MviProcessor<R>, A : MviAction<R, P>, I : MviIntent<R, P, A>, S : MviViewState>(
+open class BaseViewModel<R : MviResult, P : MviProcessor<R>, A : MviAction<R, P>, I : MviIntent<R, P, A>, S : MviViewState> @AssistedInject constructor
+    (
+    @Assisted var repo: Repository,
     private val initialState: S,
     private val initialIntent: I?,
     private val reducer: Reducer<S, R>
