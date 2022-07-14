@@ -1,11 +1,15 @@
 package com.iamhessam.jsonplaceholder.ui.screen.main.home.models
 
-import com.iamhessam.jsonplaceholder.ui.mvi.MviProcessor
+import android.util.Log
+import com.iamhessam.jsonplaceholder.data.Repository
+import com.iamhessam.jsonplaceholder.mvi.MviProcessor
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
-sealed class HomeProcessor : MviProcessor<HomeResult> {
-    // TODO: - add Hilt Di For pass repository
-//    private val repository: Repository = Repository()
+sealed class HomeProcessor : MviProcessor<HomeResult>() {
+
+    @Inject lateinit var repository: Repository
 
     object Refresh : HomeProcessor()
     object Init : HomeProcessor()
@@ -24,19 +28,14 @@ sealed class HomeProcessor : MviProcessor<HomeResult> {
     }
 
     private fun handlerInit(): HomeResult {
+        runBlocking {
+//            this@HomeProcessor.repository.local.prefsStore.updateNightMode()
+        }
+
         return HomeResult.Error("Hello Message Error")
     }
 
     private fun handlerCancel(): HomeResult {
         return HomeResult.Loading
     }
-
-//    private fun refreshHandle(): Flow<HomeResult> {
-//        return this.repository.getFakeData()
-//            .onStart { HomeResult.Loading }
-//            .map { HomeResult.Success(it) }
-//            .catch { e -> HomeResult.Error(e.message ?: "Error") }
-//            .cancellable()
-//            .flowOn(Dispatchers.IO)
-//    }
 }

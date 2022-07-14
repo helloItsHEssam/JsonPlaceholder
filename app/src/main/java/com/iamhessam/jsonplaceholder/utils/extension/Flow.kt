@@ -1,9 +1,9 @@
 package com.iamhessam.jsonplaceholder.utils.extension
 
-import com.iamhessam.jsonplaceholder.ui.mvi.MviAction
-import com.iamhessam.jsonplaceholder.ui.mvi.MviIntent
-import com.iamhessam.jsonplaceholder.ui.mvi.MviProcessor
-import com.iamhessam.jsonplaceholder.ui.mvi.MviResult
+import com.iamhessam.jsonplaceholder.mvi.MviAction
+import com.iamhessam.jsonplaceholder.mvi.MviIntent
+import com.iamhessam.jsonplaceholder.mvi.MviProcessor
+import com.iamhessam.jsonplaceholder.mvi.MviResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

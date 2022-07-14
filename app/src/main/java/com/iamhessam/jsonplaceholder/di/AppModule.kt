@@ -20,22 +20,28 @@ import javax.inject.Singleton
 class AppModule {
 
     // room DB
-    @Provides
-    @Singleton
-    fun provideAppDB(@ApplicationContext appContext: Context): AppDB {
-        return Room
-            .databaseBuilder(appContext, AppDB::class.java, "db")
-            .build()
-    }
+//    @Singleton
+//    @Provides
+//    fun provideAppDB(@ApplicationContext appContext: Context): AppDB {
+//        return Room
+//            .databaseBuilder(appContext, AppDB::class.java, "db")
+//            .build()
+//    }
 
-    // dataStore
-    private val Context.dataStore by preferencesDataStore("app_preferences")
-
-    @Provides
-    @Singleton
-    fun provideAppDataStore(@ApplicationContext appContext: Context): DataStore<Preferences> {
-        return appContext.dataStore
-    }
+//    // dataStore
+//    private val Context.dataStore by preferencesDataStore("app_preferences")
+//
+//    @Provides
+//    @Singleton
+//    fun provideAppDataStore(@ApplicationContext appContext: Context): DataStore<Preferences> {
+//        return appContext.dataStore
+//    }
+//
+//    @Provides
+//    @Singleton
+//    fun providePrefsStore(): PrefsStore {
+//        return PrefsStoreImpl()
+//    }
 
     // network Connectivity di
 }

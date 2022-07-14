@@ -8,8 +8,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class PrefsStoreImpl @Inject constructor(private val dataStore: DataStore<Preferences>) :
-    PrefsStore {
+//class PrefsStoreImpl @Inject constructor(private val dataStore: DataStore<Preferences>) :
+//    PrefsStore {
+class PrefsStoreImpl : PrefsStore {
+
+    @Inject
+    lateinit var dataStore: DataStore<Preferences>
 
     private object PrefsKey {
         val UI_Mode_Key = booleanPreferencesKey("ui_mode")

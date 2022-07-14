@@ -1,6 +1,6 @@
 package com.iamhessam.jsonplaceholder.ui.screen.main.home.models
 
-import com.iamhessam.jsonplaceholder.ui.mvi.*
+import com.iamhessam.jsonplaceholder.mvi.*
 
 sealed class HomeResult : MviResult {
     object Loading : HomeResult()
@@ -42,7 +42,6 @@ sealed class HomeIntent : MviIntent<HomeResult, HomeProcessor, HomeAction> {
         is Cancel -> HomeAction.Cancel
     }
 
-    //    TODO: Nothing - clean here
     override fun equals(other: Any?): Boolean {
         return (this === other && this.hashCode() == other.hashCode())
     }

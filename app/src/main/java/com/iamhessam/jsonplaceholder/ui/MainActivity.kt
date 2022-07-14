@@ -4,11 +4,12 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.iamhessam.jsonplaceholder.data.Repository
 import com.iamhessam.jsonplaceholder.data.local.LocalRepository
-import com.iamhessam.jsonplaceholder.ui.mvi.MviView
+import com.iamhessam.jsonplaceholder.mvi.MviView
 import com.iamhessam.jsonplaceholder.ui.navigation.graph.NavGraph
 import com.iamhessam.jsonplaceholder.ui.screen.main.home.models.*
 import com.iamhessam.jsonplaceholder.ui.theme.JsonPlaceholderTheme
@@ -21,9 +22,10 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity(),
     MviView<HomeResult, HomeProcessor, HomeAction, HomeIntent, HomeViewState> {
 
-    private val model = HomeModel()
+    private val model: HomeModel by viewModels()
 
-    @Inject lateinit var repo: Repository
+    @Inject
+    lateinit var repo: LocalRepository
 
     override fun render(state: HomeViewState) {
         Log.d("new Stateeeeeeee", state.toString())
@@ -35,9 +37,13 @@ class MainActivity : ComponentActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        repo?.let {
-            Log.d("HEsssssam", "salaaaaaam")
-        }
+        repo.sample()
+//        repo.local.sample()
+//        repo.local.appDB.sample()
+
+//        runBlocking {
+//            repo.local.prefsStore.updateNightMode()
+//        }
 
         lifecycleScope.launchWhenStarted {
             btnChannel.consumeAsFlow().collect(model::processorIntent)

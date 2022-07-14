@@ -1,4 +1,4 @@
-package com.iamhessam.jsonplaceholder.ui.mvi
+package com.iamhessam.jsonplaceholder.mvi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
