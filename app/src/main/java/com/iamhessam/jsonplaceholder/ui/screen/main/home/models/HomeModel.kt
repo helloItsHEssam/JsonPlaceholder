@@ -8,7 +8,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeModel @Inject constructor(repo: Repository) :
     BaseViewModel<HomeResult, HomeProcessorType, HomeProcessor, HomeAction, HomeIntent, HomeViewState>(
-        HomeViewState(),
+        HomeViewState.init,
         HomeIntent.Initial,
         HomeViewState.reducer,
         repo

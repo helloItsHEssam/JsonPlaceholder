@@ -54,6 +54,8 @@ data class HomeViewState(
 ) : MviViewState {
 
     companion object {
+        val init = HomeViewState(true)
+        
         val reducer: Reducer<HomeViewState, HomeResult> = { state, result ->
 
             when (result) {
