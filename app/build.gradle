@@ -101,6 +101,7 @@ dependencies {
 
     // compose navigation
     implementation "androidx.navigation:navigation-compose:$nav_version"
+    implementation "androidx.hilt:hilt-navigation-compose:$compose_hilt_navigation_version"
 
     // ktx Collection
     implementation "androidx.collection:collection-ktx:$ktx_collection_version"

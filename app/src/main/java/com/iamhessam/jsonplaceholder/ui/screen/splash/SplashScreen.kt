@@ -9,15 +9,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.iamhessam.jsonplaceholder.ui.navigation.destination.AppDestination
 import com.iamhessam.jsonplaceholder.ui.screen.main.home.models.HomeIntent
 import com.iamhessam.jsonplaceholder.ui.screen.main.home.models.HomeModel
 import com.iamhessam.jsonplaceholder.ui.theme.appColors
 
 @Composable
 fun SplashScreen(navController: NavController) {
-//    val viewModel = HomeModel()
+    val model = hiltViewModel<HomeModel>()
 
     Box(
         modifier = Modifier
@@ -27,7 +27,7 @@ fun SplashScreen(navController: NavController) {
     ) {
         Text(
             modifier = Modifier.clickable {
-//                viewModel.processorIntent(HomeIntent.Initial)
+                model.processorIntent(HomeIntent.Initial)
 //                navController.navigate(AppDestination.Main.route)
             },
             text = "Splash",
