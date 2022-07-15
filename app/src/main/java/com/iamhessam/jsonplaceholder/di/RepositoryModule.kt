@@ -26,10 +26,10 @@ abstract class RepositoryModule {
 
         @Binds
         @Singleton
-        abstract fun bindLocalRepository(localRepository: LocalRepositoryImpl): LocalRepository
+        fun bindLocalRepository(localRepository: LocalRepositoryImpl): LocalRepository
 
         @Binds
         @Singleton
-        abstract fun bindPrefsStore(prefsStore: PrefsStoreImpl): PrefsStore
+        fun bindPrefsStore(prefsStore: PrefsStoreImpl): PrefsStore
     }
 }

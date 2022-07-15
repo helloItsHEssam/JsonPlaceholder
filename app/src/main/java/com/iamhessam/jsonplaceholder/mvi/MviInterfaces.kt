@@ -1,6 +1,7 @@
 package com.iamhessam.jsonplaceholder.mvi
 
 import com.iamhessam.jsonplaceholder.data.Repository
+import kotlinx.coroutines.flow.Flow
 
 interface MviResult
 
@@ -19,7 +20,7 @@ interface MviAction<out R : MviResult, T: MviProcessorType, out P : MviProcessor
 }
 
 interface MviProcessor<out R : MviResult, T: MviProcessorType> {
-    suspend fun mapToResult(): R
+    suspend fun mapToResult(): Flow<R>
     fun injectRepository(repository: Repository)
     var processorType: T
 }

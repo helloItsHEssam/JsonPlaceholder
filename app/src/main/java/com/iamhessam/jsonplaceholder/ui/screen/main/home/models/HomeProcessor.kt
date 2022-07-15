@@ -4,7 +4,8 @@ import com.iamhessam.jsonplaceholder.data.Repository
 import com.iamhessam.jsonplaceholder.mvi.MviProcessor
 import com.iamhessam.jsonplaceholder.mvi.MviProcessorType
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 sealed class HomeProcessorType : MviProcessorType {
 
@@ -16,17 +17,24 @@ sealed class HomeProcessorType : MviProcessorType {
 class HomeProcessor(override var processorType: HomeProcessorType) :
     MviProcessor<HomeResult, HomeProcessorType> {
 
-    lateinit var repository: Repository
+    private lateinit var repository: Repository
 
     override fun injectRepository(repository: Repository) {
         this.repository = repository
     }
 
-    override suspend fun mapToResult(): HomeResult {
-        return when (this.processorType) {
-            is HomeProcessorType.Refresh -> handlerRefresh()
-            is HomeProcessorType.Init -> handlerInit()
-            is HomeProcessorType.Cancel -> handlerCancel()
+    override suspend fun mapToResult(): Flow<HomeResult> {
+        return flow {
+            emit(HomeResult.Loading)
+            when (processorType) {
+                is HomeProcessorType.Refresh -> {
+                    emit(handlerRefresh())
+                }
+                is HomeProcessorType.Init -> {
+                    emit(handlerInit())
+                }
+                is HomeProcessorType.Cancel -> handlerCancel()
+            }
         }
     }
 
@@ -35,15 +43,13 @@ class HomeProcessor(override var processorType: HomeProcessorType) :
         return HomeResult.Success("Hello Response Success")
     }
 
-    private fun handlerInit(): HomeResult {
-        runBlocking {
-            this@HomeProcessor.repository.local.prefsStore.updateNightMode()
-        }
-
+    private suspend fun handlerInit(): HomeResult {
+        delay(5_000)
         return HomeResult.Error("Hello Message Error")
     }
 
-    private fun handlerCancel(): HomeResult {
-        return HomeResult.Loading
+    private suspend fun handlerCancel(): HomeResult {
+        delay(5_000)
+        return HomeResult.Error("Hello Message Error")
     }
 }

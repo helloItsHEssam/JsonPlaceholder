@@ -11,16 +11,12 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-interface MviViewModel<R : MviResult, T: MviProcessorType, P : MviProcessor<R, T>, A : MviAction<R, T, P>, I : MviIntent<R, T, P, A>, S : MviViewState> {
+interface MviViewModel<R : MviResult, T : MviProcessorType, P : MviProcessor<R, T>, A : MviAction<R, T, P>, I : MviIntent<R, T, P, A>, S : MviViewState> {
     fun processorIntent(intent: I)
     fun cancelIntent(intent: I)
 }
 
-interface MviView<R : MviResult, T: MviProcessorType, P : MviProcessor<R, T>, A : MviAction<R, T, P>, I : MviIntent<R, T, P, A>, S : MviViewState> {
-    fun render(state: S)
-}
-
-open class BaseViewModel<R : MviResult, T: MviProcessorType, P : MviProcessor<R, T>, A : MviAction<R, T, P>, I : MviIntent<R, T, P, A>, S : MviViewState>(
+open class BaseViewModel<R : MviResult, T : MviProcessorType, P : MviProcessor<R, T>, A : MviAction<R, T, P>, I : MviIntent<R, T, P, A>, S : MviViewState>(
     private val initialState: S,
     private val initialIntent: I?,
     private val reducer: Reducer<S, R>,
