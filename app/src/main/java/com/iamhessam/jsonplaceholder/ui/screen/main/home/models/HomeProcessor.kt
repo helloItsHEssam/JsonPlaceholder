@@ -1,21 +1,41 @@
 package com.iamhessam.jsonplaceholder.ui.screen.main.home.models
 
-import com.iamhessam.jsonplaceholder.ui.mvi.MviProcessor
+import com.iamhessam.jsonplaceholder.data.Repository
+import com.iamhessam.jsonplaceholder.mvi.MviProcessor
+import com.iamhessam.jsonplaceholder.mvi.MviProcessorType
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
-sealed class HomeProcessor : MviProcessor<HomeResult> {
-    // TODO: - add Hilt Di For pass repository
-//    private val repository: Repository = Repository()
+sealed class HomeProcessorType : MviProcessorType {
 
-    object Refresh : HomeProcessor()
-    object Init : HomeProcessor()
-    object Cancel : HomeProcessor()
+    object Refresh : HomeProcessorType()
+    object Init : HomeProcessorType()
+    object Cancel : HomeProcessorType()
+}
 
-    override suspend fun mapToResult(): HomeResult = this.process()
-    private suspend fun process(): HomeResult = when (this) {
-        is Refresh -> handlerRefresh()
-        is Init -> handlerInit()
-        is Cancel -> handlerCancel()
+class HomeProcessor(override var processorType: HomeProcessorType) :
+    MviProcessor<HomeResult, HomeProcessorType> {
+
+    private lateinit var repository: Repository
+
+    override fun injectRepository(repository: Repository) {
+        this.repository = repository
+    }
+
+    override suspend fun mapToResult(): Flow<HomeResult> {
+        return flow {
+            emit(HomeResult.Loading)
+            when (processorType) {
+                is HomeProcessorType.Refresh -> {
+                    emit(handlerRefresh())
+                }
+                is HomeProcessorType.Init -> {
+                    emit(handlerInit())
+                }
+                is HomeProcessorType.Cancel -> handlerCancel()
+            }
+        }
     }
 
     private suspend fun handlerRefresh(): HomeResult {
@@ -23,20 +43,13 @@ sealed class HomeProcessor : MviProcessor<HomeResult> {
         return HomeResult.Success("Hello Response Success")
     }
 
-    private fun handlerInit(): HomeResult {
+    private suspend fun handlerInit(): HomeResult {
+        delay(5_000)
         return HomeResult.Error("Hello Message Error")
     }
 
-    private fun handlerCancel(): HomeResult {
-        return HomeResult.Loading
+    private suspend fun handlerCancel(): HomeResult {
+        delay(5_000)
+        return HomeResult.Error("Hello Message Error")
     }
-
-//    private fun refreshHandle(): Flow<HomeResult> {
-//        return this.repository.getFakeData()
-//            .onStart { HomeResult.Loading }
-//            .map { HomeResult.Success(it) }
-//            .catch { e -> HomeResult.Error(e.message ?: "Error") }
-//            .cancellable()
-//            .flowOn(Dispatchers.IO)
-//    }
 }

@@ -1,6 +1,6 @@
 package com.iamhessam.jsonplaceholder.ui.screen.main.home.models
 
-import com.iamhessam.jsonplaceholder.ui.mvi.*
+import com.iamhessam.jsonplaceholder.mvi.*
 
 sealed class HomeResult : MviResult {
     object Loading : HomeResult()
@@ -8,21 +8,21 @@ sealed class HomeResult : MviResult {
     data class Success(val response: String) : HomeResult()
 }
 
-sealed class HomeAction : MviAction<HomeResult, HomeProcessor> {
+sealed class HomeAction : MviAction<HomeResult, HomeProcessorType, HomeProcessor> {
     object Refresh : HomeAction()
     object Init : HomeAction()
     data class LoadComment(val commentId: Int) : HomeAction()
     object Cancel : HomeAction()
 
     override fun mapToProcessor(): HomeProcessor = when (this) {
-        is Refresh -> HomeProcessor.Refresh
-        is LoadComment -> HomeProcessor.Init
-        is Init -> HomeProcessor.Init
-        is Cancel -> HomeProcessor.Cancel
+        is Refresh -> HomeProcessor(HomeProcessorType.Refresh)
+        is LoadComment -> HomeProcessor(HomeProcessorType.Init)
+        is Init -> HomeProcessor(HomeProcessorType.Init)
+        is Cancel -> HomeProcessor(HomeProcessorType.Cancel)
     }
 }
 
-sealed class HomeIntent : MviIntent<HomeResult, HomeProcessor, HomeAction> {
+sealed class HomeIntent : MviIntent<HomeResult, HomeProcessorType, HomeProcessor, HomeAction> {
     object Initial : HomeIntent()
     object PullToRefresh : HomeIntent()
     data class LoadComment(val commentId: Int) : HomeIntent()
@@ -42,7 +42,6 @@ sealed class HomeIntent : MviIntent<HomeResult, HomeProcessor, HomeAction> {
         is Cancel -> HomeAction.Cancel
     }
 
-    //    TODO: Nothing - clean here
     override fun equals(other: Any?): Boolean {
         return (this === other && this.hashCode() == other.hashCode())
     }
@@ -55,6 +54,8 @@ data class HomeViewState(
 ) : MviViewState {
 
     companion object {
+        val init = HomeViewState(true)
+        
         val reducer: Reducer<HomeViewState, HomeResult> = { state, result ->
 
             when (result) {

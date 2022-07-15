@@ -1,8 +1,24 @@
 package com.iamhessam.jsonplaceholder.ui.theme
 
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
-val Teal200 = Color(0xFF03DAC5)
+open class AppColor(
+    open var backgroundColor: Color = Color.White,
+    open var titleColor: Color = Color.Black
+)
+
+class DarkColor : AppColor() {
+    override var backgroundColor: Color = Color.Black
+    override var titleColor: Color = Color.White
+}
+
+val LocalColoring = compositionLocalOf { AppColor() }
+
+val MaterialTheme.appColors: AppColor
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalColoring.current

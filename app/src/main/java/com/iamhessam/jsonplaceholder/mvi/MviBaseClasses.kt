@@ -1,7 +1,8 @@
-package com.iamhessam.jsonplaceholder.ui.mvi
+package com.iamhessam.jsonplaceholder.mvi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.iamhessam.jsonplaceholder.data.Repository
 import com.iamhessam.jsonplaceholder.utils.extension.mapperActionToProcessor
 import com.iamhessam.jsonplaceholder.utils.extension.mapperIntentToAction
 import com.iamhessam.jsonplaceholder.utils.extension.mapperProcessorToResult
@@ -10,20 +11,17 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-interface MviViewModel<R : MviResult, P : MviProcessor<R>, A : MviAction<R, P>, I : MviIntent<R, P, A>, S : MviViewState> {
+interface MviViewModel<R : MviResult, T : MviProcessorType, P : MviProcessor<R, T>, A : MviAction<R, T, P>, I : MviIntent<R, T, P, A>, S : MviViewState> {
     fun processorIntent(intent: I)
     fun cancelIntent(intent: I)
 }
 
-interface MviView<R : MviResult, P : MviProcessor<R>, A : MviAction<R, P>, I : MviIntent<R, P, A>, S : MviViewState> {
-    fun render(state: S)
-}
-
-open class BaseViewModel<R : MviResult, P : MviProcessor<R>, A : MviAction<R, P>, I : MviIntent<R, P, A>, S : MviViewState>(
+open class BaseViewModel<R : MviResult, T : MviProcessorType, P : MviProcessor<R, T>, A : MviAction<R, T, P>, I : MviIntent<R, T, P, A>, S : MviViewState>(
     private val initialState: S,
     private val initialIntent: I?,
-    private val reducer: Reducer<S, R>
-) : MviViewModel<R, P, A, I, S>, ViewModel() {
+    private val reducer: Reducer<S, R>,
+    private val repository: Repository
+) : MviViewModel<R, T, P, A, I, S>, ViewModel() {
 
     private val _states: MutableStateFlow<S> = MutableStateFlow(this.initialState)
     private val jobs: MutableMap<Int, Job> = mutableMapOf()
@@ -61,7 +59,7 @@ open class BaseViewModel<R : MviResult, P : MviProcessor<R>, A : MviAction<R, P>
             .filterNotNull()
             .mapperIntentToAction()
             .mapperActionToProcessor()
-            .mapperProcessorToResult()
+            .mapperProcessorToResult(this.repository)
             .scan(this.initialState, this.reducer)
             .distinctUntilChanged()
             .onEach(::changeSave)
