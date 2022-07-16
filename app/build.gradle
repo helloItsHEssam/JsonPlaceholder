@@ -106,6 +106,8 @@ dependencies {
     // ktx Collection
     implementation "androidx.collection:collection-ktx:$ktx_collection_version"
 
+    implementation "com.google.accompanist:accompanist-permissions:$accompanist_version"
+
     // life cycle
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"

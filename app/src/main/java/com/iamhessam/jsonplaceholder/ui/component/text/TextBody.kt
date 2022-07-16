@@ -9,10 +9,12 @@ import com.iamhessam.jsonplaceholder.ui.theme.appColors
 import com.iamhessam.jsonplaceholder.utils.constant.CallBack
 
 @Composable
-fun BodyText(text: String, clickable: CallBack) {
+fun TextBody(text: String, clickable: CallBack? = null) {
     Text(
         modifier = Modifier.clickable {
-            clickable()
+            clickable?.let {
+                it()
+            }
         },
         text = text,
         color = MaterialTheme.appColors.titleColor

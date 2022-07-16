@@ -4,8 +4,7 @@ import com.iamhessam.jsonplaceholder.data.Repository
 import com.iamhessam.jsonplaceholder.mvi.MviProcessor
 import com.iamhessam.jsonplaceholder.mvi.MviProcessorType
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 
 sealed class HomeProcessorType : MviProcessorType {
 
@@ -24,32 +23,40 @@ class HomeProcessor(override var processorType: HomeProcessorType) :
     }
 
     override suspend fun mapToResult(): Flow<HomeResult> {
-        return flow {
-            emit(HomeResult.Loading)
-            when (processorType) {
-                is HomeProcessorType.Refresh -> {
-                    emit(handlerRefresh())
-                }
-                is HomeProcessorType.Init -> {
-                    emit(handlerInit())
-                }
-                is HomeProcessorType.Cancel -> handlerCancel()
-            }
+        return when (processorType) {
+            is HomeProcessorType.Refresh -> handlerRefresh()
+            is HomeProcessorType.Init -> handlerInit()
+            is HomeProcessorType.Cancel -> handlerCancel()
         }
     }
 
-    private suspend fun handlerRefresh(): HomeResult {
-        delay(5_000)
-        return HomeResult.Success("Hello Response Success")
+    private suspend fun handlerRefresh(): Flow<HomeResult> {
+        return repository
+            .local
+            .prefsStore
+            .isNightMode()
+            .onStart {
+                HomeResult.Loading
+            }
+            .onEach { delay(10_000) }
+            .map {
+                HomeResult.Success("Hello Response Success $it")
+            }
     }
 
-    private suspend fun handlerInit(): HomeResult {
-        delay(5_000)
-        return HomeResult.Error("Hello Message Error")
+    private suspend fun handlerInit(): Flow<HomeResult> {
+        return flow {
+            emit(HomeResult.Loading)
+            delay(5_000)
+            emit(HomeResult.Error("Hello Message Error"))
+        }
     }
 
-    private suspend fun handlerCancel(): HomeResult {
-        delay(5_000)
-        return HomeResult.Error("Hello Message Error")
+    private suspend fun handlerCancel(): Flow<HomeResult> {
+        return flow {
+            emit(HomeResult.Loading)
+            delay(5_000)
+            emit(HomeResult.Error("Hello Message Error"))
+        }
     }
 }
