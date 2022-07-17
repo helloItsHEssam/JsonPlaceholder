@@ -1,14 +1,15 @@
 package com.iamhessam.jsonplaceholder.utils.extra.permission
 
-import android.app.Activity
 import android.content.Context
-import android.content.ContextWrapper
+import android.util.Log
 import androidx.compose.runtime.*
 import androidx.core.app.ActivityCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.iamhessam.jsonplaceholder.utils.constant.CallBack
+import com.iamhessam.jsonplaceholder.utils.constant.CallBackData
 import com.iamhessam.jsonplaceholder.utils.extension.findActivity
 
 class RequestPermissionState(initRequest: Boolean, val permission: String) {
@@ -32,7 +33,8 @@ fun RequestPermission(
     requestState: RequestPermissionState,
     granted: CallBack? = null,
     showRational: CallBack? = null,
-    permanentlyDenied: CallBack? = null
+    permanentlyDenied: CallBack? = null,
+    chooseState: CallBackData<PermissionStatus>? = null
 ) {
     val permissionState =
         rememberPermissionState(permission = requestState.permission) { isGranted ->
@@ -52,9 +54,14 @@ fun RequestPermission(
         if (permissionState.status.isGranted) {
             granted?.let { it() }
         } else {
+
             LaunchedEffect(key1 = Unit) {
                 permissionState.launchPermissionRequest()
             }
         }
+    } else {
+        chooseState?.let { it(permissionState.status) }
     }
+
+
 }
