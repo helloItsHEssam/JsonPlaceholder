@@ -2,6 +2,7 @@ package com.iamhessam.jsonplaceholder.ui.screen.splash
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -9,78 +10,73 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavController
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.permissions.shouldShowRationale
 import com.iamhessam.jsonplaceholder.ui.component.text.TextBody
-import com.iamhessam.jsonplaceholder.ui.screen.main.home.models.HomeIntent
+import com.iamhessam.jsonplaceholder.ui.navigation.destination.AppDestination
 import com.iamhessam.jsonplaceholder.ui.screen.main.home.models.HomeModel
 import com.iamhessam.jsonplaceholder.ui.screen.main.home.models.HomeViewState
 import com.iamhessam.jsonplaceholder.ui.theme.appColors
 import com.iamhessam.jsonplaceholder.utils.constant.CallBack
+import com.iamhessam.jsonplaceholder.utils.extension.checkHasPermission
 import com.iamhessam.jsonplaceholder.utils.extension.collectAsStateLifecycleAware
+import com.iamhessam.jsonplaceholder.utils.extra.permission.RequestPermission
+import com.iamhessam.jsonplaceholder.utils.extra.permission.rememberRequestPermissionsState
 
+/**
+ *
+ * @author hessam
+ * @return sample return
+ */
 @SuppressLint(
     "PermissionLaunchedDuringComposition",
     "CoroutineCreationDuringComposition"
 )
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun SplashScreen(navController: NavController) {
     val model = hiltViewModel<HomeModel>()
 
+    val permissionRequestState = rememberRequestPermissionsState(
+        permissions = Manifest.permission.CAMERA
+    )
 
-    var permissionAlreadyRequested by remember {
-        mutableStateOf(false)
-    }
-    val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
-
-    Log.d("HESSSSAMNEEEEE", cameraPermissionState.status.toString())
-    when {
-        cameraPermissionState.status.shouldShowRationale ||
-                !cameraPermissionState.status.shouldShowRationale -> {
-            cameraPermissionState.launchPermissionRequest()
+    val context = LocalContext.current
+    RequestPermission(
+        context = context,
+        requestState = permissionRequestState,
+        granted = {
+            Log.d("HESSSSAMNEEEEE", "Granted")
+        },
+        showRational = {
+            Log.d("HESSSSAMNEEEEE", "Show rational")
+            // show Rational here
+        },
+        permanentlyDenied = {
+            Log.d("HESSSSAMNEEEEE", "Denied")
         }
-
-        cameraPermissionState.status.isGranted -> {
-            Log.d("HESSSSAMNEEEEE", "Grannnnted")
-        }
-    }
-
-
-//
-//    if (!permissionAlreadyRequested && !cameraPermissionState.shouldShowRationale) {
-//        SideEffect {
-//            cameraPermissionState.launchPermissionRequest()
-//        }
-//    } else if (cameraPermissionState.shouldShowRationale) {
-//        ShowRationaleContent {
-//            cameraPermissionState.launchPermissionRequest()
-//        }
-//    } else {
-//        ShowOpenSettingsContent {
-//            context.openSettings()
-//        }
-//    }
-
+    )
 
     val viewState =
         model.states().collectAsStateLifecycleAware(HomeViewState.init)
     SplashBodyScreen(state = viewState, callBack = {
-        model.processorIntent(HomeIntent.Initial)
+        navController.navigate(AppDestination.Main.route)
     }) {
-
 //        model.processorIntent(HomeIntent.PullToRefresh)
+        if (context.checkHasPermission(Manifest.permission.CAMERA)) {
+            Log.d("HESSSSAMNEEEEE", "rrrrrrr")
+        }
     }
+}
+
+@Composable
+private fun sample() {
+    val context = LocalContext.current
 }
 
 @Composable

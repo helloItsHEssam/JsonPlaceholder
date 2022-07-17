@@ -5,6 +5,8 @@
 
 <!--    Permissions-->
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera.any"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
     
     <application
         android:name=".Main"
