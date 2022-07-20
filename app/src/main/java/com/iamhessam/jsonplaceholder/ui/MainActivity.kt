@@ -3,13 +3,21 @@ package com.iamhessam.jsonplaceholder.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.collectAsState
 import androidx.navigation.compose.rememberNavController
 import com.iamhessam.jsonplaceholder.ui.navigation.graph.NavGraph
 import com.iamhessam.jsonplaceholder.ui.theme.JsonPlaceholderTheme
+import com.iamhessam.jsonplaceholder.utils.extension.collectAsStateLifecycleAware
+import com.iamhessam.jsonplaceholder.utils.settings.theme.ActiveColor
+import com.iamhessam.jsonplaceholder.utils.settings.theme.UserSettings
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var userSettings: UserSettings
 
 //    private val btnChannel = Channel<HomeIntent>()
 //    private val btnCancelChannel = Channel<HomeIntent>()
@@ -27,7 +35,9 @@ class MainActivity : ComponentActivity() {
 //        }
 
         setContent {
-            JsonPlaceholderTheme {
+            val viewState = userSettings.activeColor().collectAsStateLifecycleAware(ActiveColor.System)
+
+            JsonPlaceholderTheme(activeColor = ) {
                 val navController = rememberNavController()
                 NavGraph(navController = navController)
             }
