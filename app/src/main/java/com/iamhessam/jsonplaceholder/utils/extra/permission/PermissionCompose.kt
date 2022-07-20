@@ -1,7 +1,6 @@
 package com.iamhessam.jsonplaceholder.utils.extra.permission
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.*
 import androidx.core.app.ActivityCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -30,12 +29,15 @@ fun rememberRequestPermissionsState(
 @Composable
 fun RequestPermission(
     context: Context,
-    requestState: RequestPermissionState,
+    requestPermission: String,
     granted: CallBack? = null,
     showRational: CallBack? = null,
     permanentlyDenied: CallBack? = null,
     chooseState: CallBackData<PermissionStatus>? = null
 ) {
+    val requestState = rememberRequestPermissionsState(
+        permissions = requestPermission
+    )
     val permissionState =
         rememberPermissionState(permission = requestState.permission) { isGranted ->
             val permissionPermanentlyDenied = !ActivityCompat.shouldShowRequestPermissionRationale(

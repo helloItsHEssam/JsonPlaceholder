@@ -26,7 +26,6 @@ import com.iamhessam.jsonplaceholder.utils.constant.CallBack
 import com.iamhessam.jsonplaceholder.utils.extension.checkHasPermission
 import com.iamhessam.jsonplaceholder.utils.extension.collectAsStateLifecycleAware
 import com.iamhessam.jsonplaceholder.utils.extra.permission.RequestPermission
-import com.iamhessam.jsonplaceholder.utils.extra.permission.rememberRequestPermissionsState
 
 /**
  *
@@ -42,14 +41,10 @@ import com.iamhessam.jsonplaceholder.utils.extra.permission.rememberRequestPermi
 fun SplashScreen(navController: NavController) {
     val model = hiltViewModel<HomeModel>()
 
-    val permissionRequestState = rememberRequestPermissionsState(
-        permissions = Manifest.permission.CAMERA
-    )
-
+    // get permission
     val context = LocalContext.current
-
     RequestPermission(context = context,
-        requestState = permissionRequestState,
+        requestPermission = Manifest.permission.CAMERA,
         granted = {
             Log.d("HESSSSAMNEEEEE", "Granted")
         },
@@ -76,7 +71,6 @@ fun SplashScreen(navController: NavController) {
     val viewState =
         model.states().collectAsStateLifecycleAware(HomeViewState.init)
     SplashBodyScreen(state = viewState, callBack = {
-
 //        navController.navigate(AppDestination.Main.route)
     }) {
 //        model.processorIntent(HomeIntent.PullToRefresh)
