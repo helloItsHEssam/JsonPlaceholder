@@ -5,8 +5,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.iamhessam.jsonplaceholder.ui.theme.appColors
 import com.iamhessam.jsonplaceholder.utils.constant.CallBack
+import com.iamhessam.jsonplaceholder.utils.extension.appColors
+import com.iamhessam.jsonplaceholder.utils.extension.appTypography
 
 @Composable
 fun TextBody(text: String, clickable: CallBack? = null) {
@@ -17,6 +18,7 @@ fun TextBody(text: String, clickable: CallBack? = null) {
             }
         },
         text = text,
-        color = MaterialTheme.appColors.titleColor
+        color = MaterialTheme.appColors.titleColor,
+        style = MaterialTheme.appTypography.body
     )
 }

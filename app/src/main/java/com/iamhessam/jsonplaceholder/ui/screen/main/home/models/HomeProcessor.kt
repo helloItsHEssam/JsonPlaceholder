@@ -4,7 +4,8 @@ import com.iamhessam.jsonplaceholder.data.Repository
 import com.iamhessam.jsonplaceholder.mvi.MviProcessor
 import com.iamhessam.jsonplaceholder.mvi.MviProcessorType
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 sealed class HomeProcessorType : MviProcessorType {
 
@@ -31,17 +32,11 @@ class HomeProcessor(override var processorType: HomeProcessorType) :
     }
 
     private suspend fun handlerRefresh(): Flow<HomeResult> {
-        return repository
-            .local
-            .prefsStore
-            .isNightMode()
-            .onStart {
-                HomeResult.Loading
-            }
-            .onEach { delay(10_000) }
-            .map {
-                HomeResult.Success("Hello Response Success $it")
-            }
+        return flow {
+            emit(HomeResult.Loading)
+            delay(5_000)
+            emit(HomeResult.Error("Hello Message Error"))
+        }
     }
 
     private suspend fun handlerInit(): Flow<HomeResult> {

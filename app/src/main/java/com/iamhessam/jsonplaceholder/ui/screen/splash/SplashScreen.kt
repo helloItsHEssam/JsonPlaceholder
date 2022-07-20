@@ -21,8 +21,8 @@ import com.google.accompanist.permissions.PermissionStatus
 import com.iamhessam.jsonplaceholder.ui.component.text.TextBody
 import com.iamhessam.jsonplaceholder.ui.screen.main.home.models.HomeModel
 import com.iamhessam.jsonplaceholder.ui.screen.main.home.models.HomeViewState
-import com.iamhessam.jsonplaceholder.ui.theme.appColors
 import com.iamhessam.jsonplaceholder.utils.constant.CallBack
+import com.iamhessam.jsonplaceholder.utils.extension.appColors
 import com.iamhessam.jsonplaceholder.utils.extension.checkHasPermission
 import com.iamhessam.jsonplaceholder.utils.extension.collectAsStateLifecycleAware
 import com.iamhessam.jsonplaceholder.utils.extra.permission.RequestPermission
@@ -89,7 +89,7 @@ private fun SplashBodyScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.appColors.backgroundColor),
+                .background(MaterialTheme.appColors.backgroundColor),
     ) {
         TextBody(text = "splash") {
             callBack()
