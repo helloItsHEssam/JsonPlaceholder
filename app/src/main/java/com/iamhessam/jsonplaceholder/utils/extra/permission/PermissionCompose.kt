@@ -64,6 +64,4 @@ fun RequestPermission(
     } else {
         chooseState?.let { it(permissionState.status) }
     }
-
-
 }

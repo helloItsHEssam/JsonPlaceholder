@@ -1,8 +1,10 @@
 package com.iamhessam.jsonplaceholder.ui.screen.splash.screen
 
 import android.Manifest
-import android.annotation.SuppressLint
+import android.net.Uri
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -30,13 +32,9 @@ import com.iamhessam.jsonplaceholder.utils.settings.theme.ActiveColor
 /**
  *
  * @author hessam
- * @return sample return
+ * @return Nothing Return
  */
 @OptIn(ExperimentalPermissionsApi::class)
-@SuppressLint(
-    "PermissionLaunchedDuringComposition",
-    "CoroutineCreationDuringComposition"
-)
 @Composable
 fun SplashScreen(navController: NavController) {
     val model = hiltViewModel<SplashModel>()
@@ -67,6 +65,15 @@ fun SplashScreen(navController: NavController) {
 
         }
     )
+
+    var imageUri by remember {
+        mutableStateOf<Uri?>(null)
+    }
+    val launcher = rememberLauncherForActivityResult(contract =
+    ActivityResultContracts.GetContent()) { uri: Uri? ->
+        imageUri = uri
+    }
+
     val viewState =
         model.states().collectAsStateLifecycleAware(SplashViewState.init)
 
@@ -77,7 +84,8 @@ fun SplashScreen(navController: NavController) {
     }
 
     SplashBodyScreen(state = viewState, callBack = {
-//        navController.navigate(AppDestination.Main.route)
+        launcher.launch("image/*")
+
     }) {
         if (hello) {
             model.processorIntent(SplashIntent.UpdateTheme(ActiveColor.User(false)))
@@ -106,6 +114,9 @@ private fun SplashBodyScreen(
     ) {
         TextBody(text = "splash") {
             callBack()
+
+
+
         }
         Spacer(modifier = Modifier.padding(5.dp))
         TextBody("SplashTwo") {
