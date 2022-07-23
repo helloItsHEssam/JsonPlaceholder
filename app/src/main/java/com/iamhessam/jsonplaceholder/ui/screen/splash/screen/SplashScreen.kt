@@ -1,4 +1,4 @@
-package com.iamhessam.jsonplaceholder.ui.screen.splash
+package com.iamhessam.jsonplaceholder.ui.screen.splash.screen
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -9,8 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -19,12 +18,14 @@ import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.iamhessam.jsonplaceholder.ui.component.text.TextBody
-import com.iamhessam.jsonplaceholder.ui.screen.main.home.models.HomeModel
-import com.iamhessam.jsonplaceholder.ui.screen.main.home.models.HomeViewState
+import com.iamhessam.jsonplaceholder.ui.screen.splash.models.SplashIntent
+import com.iamhessam.jsonplaceholder.ui.screen.splash.models.SplashModel
+import com.iamhessam.jsonplaceholder.ui.screen.splash.models.SplashViewState
 import com.iamhessam.jsonplaceholder.utils.constant.CallBack
 import com.iamhessam.jsonplaceholder.utils.extension.appColors
 import com.iamhessam.jsonplaceholder.utils.extension.collectAsStateLifecycleAware
 import com.iamhessam.jsonplaceholder.utils.extra.permission.RequestPermission
+import com.iamhessam.jsonplaceholder.utils.settings.theme.ActiveColor
 
 /**
  *
@@ -38,7 +39,7 @@ import com.iamhessam.jsonplaceholder.utils.extra.permission.RequestPermission
 )
 @Composable
 fun SplashScreen(navController: NavController) {
-    val model = hiltViewModel<HomeModel>()
+    val model = hiltViewModel<SplashModel>()
 
     // get permission
     val context = LocalContext.current
@@ -66,31 +67,42 @@ fun SplashScreen(navController: NavController) {
 
         }
     )
-
     val viewState =
-        model.states().collectAsStateLifecycleAware(HomeViewState.init)
+        model.states().collectAsStateLifecycleAware(SplashViewState.init)
+
+    model.processorIntent(SplashIntent.ReadingTheme)
+
+    var hello by remember {
+        mutableStateOf(true)
+    }
+
     SplashBodyScreen(state = viewState, callBack = {
 //        navController.navigate(AppDestination.Main.route)
     }) {
+        if (hello) {
+            model.processorIntent(SplashIntent.UpdateTheme(ActiveColor.User(false)))
+        } else {
+            model.processorIntent(SplashIntent.UpdateTheme(ActiveColor.User(true)))
+        }
+        hello = !hello
+
 //        model.processorIntent(HomeIntent.PullToRefresh)
 //        if (!context.checkHasPermission(Manifest.permission.CAMERA)) {
 //            Log.d("HESSSSAMNEEEEE", "rrrrrrr")
 //        }
-
-
     }
 }
 
 @Composable
 private fun SplashBodyScreen(
-    state: State<HomeViewState>, callBack: CallBack,
+    state: State<SplashViewState>, callBack: CallBack,
     callBack2: CallBack
 ) {
-    Log.d("HESSSSAMNEEEEE", state.value.toString())
+    Log.d("HEssam THEME Splash", state.value.toString())
     Column(
         modifier = Modifier
             .fillMaxSize()
-                .background(MaterialTheme.appColors.backgroundColor),
+            .background(MaterialTheme.appColors.backgroundColor),
     ) {
         TextBody(text = "splash") {
             callBack()

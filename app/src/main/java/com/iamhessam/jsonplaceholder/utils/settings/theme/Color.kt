@@ -16,10 +16,11 @@ sealed class ActiveColor {
     object System : ActiveColor()
     data class User(val isDark: Boolean) : ActiveColor()
 
-    override fun toString(): String = when (this) {
-        is System -> "System"
-        is User -> if (isDark) "Dark" else "Light"
-    }
+    val convertToString: String
+        get() = when (this) {
+            is System -> "System"
+            is User -> if (isDark) "Dark" else "Light"
+        }
 
     companion object {
         fun createFromString(activeColorString: String): ActiveColor {

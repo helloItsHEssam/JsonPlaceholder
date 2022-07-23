@@ -1,6 +1,7 @@
 package com.iamhessam.jsonplaceholder.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.collectAsState
@@ -10,7 +11,7 @@ import com.iamhessam.jsonplaceholder.ui.theme.JsonPlaceholderTheme
 import com.iamhessam.jsonplaceholder.utils.settings.theme.ActiveColor
 import com.iamhessam.jsonplaceholder.utils.settings.theme.Shape
 import com.iamhessam.jsonplaceholder.utils.settings.theme.Typography
-import com.iamhessam.jsonplaceholder.utils.settings.theme.UserSettings
+import com.iamhessam.jsonplaceholder.utils.settings.theme.UISettings
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -18,27 +19,17 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     @Inject
-    lateinit var userSettings: UserSettings
-
-//    private val btnChannel = Channel<HomeIntent>()
-//    private val btnCancelChannel = Channel<HomeIntent>()
+    lateinit var userSettings: UISettings
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        lifecycleScope.launchWhenStarted {
-//            btnChannel.consumeAsFlow().collect(model::processorIntent)
-//            btnCancelChannel.consumeAsFlow().collect(model::cancelIntent)
-//        }
-//
-//        lifecycleScope.launchWhenStarted {
-//            model.states().collect(::render)
-//        }
-
         setContent {
-            val viewState = userSettings.activeColor.collectAsState(initial = ActiveColor.System)
+            val activeColor = userSettings.activeColor.collectAsState(initial = ActiveColor.System)
+            Log.d("HEssam THEME Activity", activeColor.value.toString())
+
             JsonPlaceholderTheme(
-                activeColor = viewState.value,
+                activeColor = activeColor.value,
                 shape = Shape(),
                 typography = Typography()
             ) {

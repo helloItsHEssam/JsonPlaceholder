@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.iamhessam.jsonplaceholder.ui.navigation.destination.AppDestination
 import com.iamhessam.jsonplaceholder.ui.screen.main.MainScreen
-import com.iamhessam.jsonplaceholder.ui.screen.splash.SplashScreen
+import com.iamhessam.jsonplaceholder.ui.screen.splash.screen.SplashScreen
 
 @Composable
 fun NavGraph(navController: NavHostController) {

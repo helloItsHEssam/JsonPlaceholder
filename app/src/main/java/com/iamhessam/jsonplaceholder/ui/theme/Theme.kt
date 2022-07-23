@@ -31,7 +31,7 @@ fun JsonPlaceholderTheme(
 @Composable
 private fun colorFromActiveColor(activeColor: ActiveColor): AppColor {
     return when (activeColor) {
-        is ActiveColor.System -> if (isSystemInDarkTheme()) AppColor() else DarkColor()
+        is ActiveColor.System -> if (!isSystemInDarkTheme()) AppColor() else DarkColor()
         is ActiveColor.User -> if (activeColor.isDark) DarkColor() else AppColor()
     }
 }

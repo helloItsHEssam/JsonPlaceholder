@@ -5,7 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.iamhessam.jsonplaceholder.ui.navigation.destination.BottomBarDestination
-import com.iamhessam.jsonplaceholder.ui.screen.main.home.HomeScreen
+import com.iamhessam.jsonplaceholder.ui.screen.main.home.screen.HomeScreen
 import com.iamhessam.jsonplaceholder.ui.screen.main.settings.SettingScreen
 
 @Composable
