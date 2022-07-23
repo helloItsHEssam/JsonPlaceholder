@@ -7,8 +7,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.navigation.compose.rememberNavController
 import com.iamhessam.jsonplaceholder.ui.navigation.graph.NavGraph
 import com.iamhessam.jsonplaceholder.ui.theme.JsonPlaceholderTheme
-import com.iamhessam.jsonplaceholder.utils.extension.collectAsStateLifecycleAware
 import com.iamhessam.jsonplaceholder.utils.settings.theme.ActiveColor
+import com.iamhessam.jsonplaceholder.utils.settings.theme.Shape
+import com.iamhessam.jsonplaceholder.utils.settings.theme.Typography
 import com.iamhessam.jsonplaceholder.utils.settings.theme.UserSettings
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -35,9 +36,12 @@ class MainActivity : ComponentActivity() {
 //        }
 
         setContent {
-            val viewState = userSettings.activeColor().collectAsStateLifecycleAware(ActiveColor.System)
-
-            JsonPlaceholderTheme(activeColor = ) {
+            val viewState = userSettings.activeColor.collectAsState(initial = ActiveColor.System)
+            JsonPlaceholderTheme(
+                activeColor = viewState.value,
+                shape = Shape(),
+                typography = Typography()
+            ) {
                 val navController = rememberNavController()
                 NavGraph(navController = navController)
             }

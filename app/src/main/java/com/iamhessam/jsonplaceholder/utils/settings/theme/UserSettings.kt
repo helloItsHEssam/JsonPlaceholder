@@ -1,11 +1,9 @@
 package com.iamhessam.jsonplaceholder.utils.settings.theme
 
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 
 interface UserSettings {
-
     val shape: Shape
     val typography: Typography
-
-    val activeColor: StateFlow<ActiveColor>
+    val activeColor: Flow<ActiveColor>
 }

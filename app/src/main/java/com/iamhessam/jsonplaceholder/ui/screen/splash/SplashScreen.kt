@@ -23,7 +23,6 @@ import com.iamhessam.jsonplaceholder.ui.screen.main.home.models.HomeModel
 import com.iamhessam.jsonplaceholder.ui.screen.main.home.models.HomeViewState
 import com.iamhessam.jsonplaceholder.utils.constant.CallBack
 import com.iamhessam.jsonplaceholder.utils.extension.appColors
-import com.iamhessam.jsonplaceholder.utils.extension.checkHasPermission
 import com.iamhessam.jsonplaceholder.utils.extension.collectAsStateLifecycleAware
 import com.iamhessam.jsonplaceholder.utils.extra.permission.RequestPermission
 
@@ -74,9 +73,11 @@ fun SplashScreen(navController: NavController) {
 //        navController.navigate(AppDestination.Main.route)
     }) {
 //        model.processorIntent(HomeIntent.PullToRefresh)
-        if (!context.checkHasPermission(Manifest.permission.CAMERA)) {
-            Log.d("HESSSSAMNEEEEE", "rrrrrrr")
-        }
+//        if (!context.checkHasPermission(Manifest.permission.CAMERA)) {
+//            Log.d("HESSSSAMNEEEEE", "rrrrrrr")
+//        }
+
+
     }
 }
 
