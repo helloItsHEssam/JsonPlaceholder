@@ -18,8 +18,8 @@ jobs:
       - name: Change wrapper permissions  // 2
         run: chmod +x ./gradlew
 
-      - name: Run Tests                   // 3
-        run: ./gradlew test
+#      - name: Run Tests                   // 3
+#        run: ./gradlew test
 
       - name: Build Project               // 4
         run: ./gradlew assemble
