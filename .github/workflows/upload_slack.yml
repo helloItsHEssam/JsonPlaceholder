@@ -13,4 +13,4 @@ jobs:
         with:
           token: ${{ secrets.SLACK_TOKEN }}
           path: test.txt
-          channel: random
+          channel: general
