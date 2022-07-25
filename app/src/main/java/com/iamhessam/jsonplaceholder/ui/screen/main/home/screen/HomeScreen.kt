@@ -10,9 +10,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
+import com.iamhessam.jsonplaceholder.ui.navigation.destination.BottomBarDestination
 
 @Composable
-fun SplashScreen(navController: NavController) {
+fun HomeScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -21,7 +22,7 @@ fun SplashScreen(navController: NavController) {
     ) {
         Text(
             modifier = Modifier.clickable {
-//                navController.navigate(Screen.Home.route)
+                navController.navigate(BottomBarDestination.Home.route)
             },
             text = "Home",
             color = Color.White

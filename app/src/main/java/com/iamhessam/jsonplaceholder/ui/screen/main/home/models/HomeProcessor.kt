@@ -24,32 +24,34 @@ class HomeProcessor(override var processorType: HomeProcessorType) :
     }
 
     override suspend fun mapToResult(): Flow<HomeResult> {
-        return flow {
-            emit(HomeResult.Loading)
-            when (processorType) {
-                is HomeProcessorType.Refresh -> {
-                    emit(handlerRefresh())
-                }
-                is HomeProcessorType.Init -> {
-                    emit(handlerInit())
-                }
-                is HomeProcessorType.Cancel -> handlerCancel()
-            }
+        return when (processorType) {
+            is HomeProcessorType.Refresh -> handlerRefresh()
+            is HomeProcessorType.Init -> handlerInit()
+            is HomeProcessorType.Cancel -> handlerCancel()
         }
     }
 
-    private suspend fun handlerRefresh(): HomeResult {
-        delay(5_000)
-        return HomeResult.Success("Hello Response Success")
+    private suspend fun handlerRefresh(): Flow<HomeResult> {
+        return flow {
+            emit(HomeResult.Loading)
+            delay(5_000)
+            emit(HomeResult.Error("Hello Message Error"))
+        }
     }
 
-    private suspend fun handlerInit(): HomeResult {
-        delay(5_000)
-        return HomeResult.Error("Hello Message Error")
+    private suspend fun handlerInit(): Flow<HomeResult> {
+        return flow {
+            emit(HomeResult.Loading)
+            delay(5_000)
+            emit(HomeResult.Error("Hello Message Error"))
+        }
     }
 
-    private suspend fun handlerCancel(): HomeResult {
-        delay(5_000)
-        return HomeResult.Error("Hello Message Error")
+    private suspend fun handlerCancel(): Flow<HomeResult> {
+        return flow {
+            emit(HomeResult.Loading)
+            delay(5_000)
+            emit(HomeResult.Error("Hello Message Error"))
+        }
     }
 }
