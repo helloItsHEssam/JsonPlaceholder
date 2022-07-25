@@ -28,6 +28,7 @@ import com.iamhessam.jsonplaceholder.utils.extension.appColors
 import com.iamhessam.jsonplaceholder.utils.extension.collectAsStateLifecycleAware
 import com.iamhessam.jsonplaceholder.utils.extra.permission.RequestPermission
 import com.iamhessam.jsonplaceholder.utils.settings.theme.ActiveColor
+import com.iamhessam.jsonplaceholder.utils.settings.theme.ThemeColor
 
 /**
  *
@@ -88,9 +89,9 @@ fun SplashScreen(navController: NavController) {
 
     }) {
         if (hello) {
-            model.processorIntent(SplashIntent.UpdateTheme(ActiveColor.User(false)))
+            model.processorIntent(SplashIntent.UpdateTheme(ActiveColor.User(ThemeColor.LIGHT)))
         } else {
-            model.processorIntent(SplashIntent.UpdateTheme(ActiveColor.User(true)))
+            model.processorIntent(SplashIntent.UpdateTheme(ActiveColor.User(ThemeColor.DARK)))
         }
         hello = !hello
 
