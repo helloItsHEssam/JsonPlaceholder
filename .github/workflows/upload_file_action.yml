@@ -14,8 +14,10 @@ jobs:
         with:
           distribution: temurin
           java-version: "11"
-      - run: echo howdy > extra-file.txt
+      - name: Create a file
+        run: echo ${{ matrix.node-version }} > my_file.txt
+      - name: Accidentally upload to the same artifact via multiple jobs
         uses: actions/upload-artifact@v3
         with:
-          name: apk
-          path: world.txt
+          name: my-artifact
+          path: ${{ github.workspace }}
