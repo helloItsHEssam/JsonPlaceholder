@@ -1,16 +1,18 @@
-on: [push]
+name: slack-notification
+
+on: [push, issues]
 
 jobs:
-  slack_upload_job:
+  slack-notifications:
     runs-on: ubuntu-latest
-    name: Upload test file
+    name: Sends a message to Slack when a push, an issue is made
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      - run: echo "Test file " > test.txt
-      - name: Upload to slack step
-        uses: adrey/slack-file-upload-action@master
+      - name: Send message to Slack API
+        uses: archive/github-actions-slack@v2.0.0
+        id: notify
         with:
-          token: ${{ secrets.SLACK_TOKEN }}
-          path: test.txt
-          channel: general
+          slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
+          slack-channel: general
+          slack-text: Hello! Event "${{ github.event_name }}" in "${{ github.repository }}" 🤓
+      - name: Result from "Send Message"
+        run: echo "The result was ${{ steps.notify.outputs.slack-result }}"
