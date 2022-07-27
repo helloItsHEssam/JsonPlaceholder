@@ -1,0 +1,22 @@
+name: upload file
+
+on: [push]
+
+jobs:
+  apk:
+    name: Generate APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.4.0
+      - name: Setup JDK
+        uses: actions/setup-java@v2.5.0
+        with:
+          distribution: temurin
+          java-version: "11"
+      - name: Upload APK
+      - run: echo howdy > extra-file.txt
+        uses: actions/upload-artifact@v3
+        with:
+          name: apk
+          path: world.txt
