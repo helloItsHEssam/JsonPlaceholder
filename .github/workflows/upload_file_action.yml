@@ -14,7 +14,6 @@ jobs:
         with:
           distribution: temurin
           java-version: "11"
-      - name: Upload APK
       - run: echo howdy > extra-file.txt
         uses: actions/upload-artifact@v3
         with:
