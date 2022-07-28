@@ -15,7 +15,7 @@ jobs:
           slack-channel: general
           slack-text: Hello! Event "${{ github.event_name }}" by ${{github.actor}}  in "${{ github.repository }}" 🤓
 
-      - name: Send message to Slack API
+      - name: Send message to Slack API 2
         uses: archive/github-actions-slack@v2.0.0
         id: notify2
         with:
