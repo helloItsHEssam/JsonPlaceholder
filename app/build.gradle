@@ -44,18 +44,18 @@ android {
     }
 
     // edit apk name
-    android.applicationVariants.all { variant ->
-        variant.outputs.all {
-            def newName = "Arashnia_" +
-                    variant.buildType.name +
-                    "_" +
-                    variant.versionName +
-                    "_" +
-                    variant.versionCode +
-                    ".apk"
-            outputFileName = newName
-        }
-    }
+//    android.applicationVariants.all { variant ->
+//        variant.outputs.all {
+//            def newName = "Arashnia_" +
+//                    variant.buildType.name +
+//                    "_" +
+//                    variant.versionName +
+//                    "_" +
+//                    variant.versionCode +
+//                    ".apk"
+//            outputFileName = newName
+//        }
+//    }
 
     // build type
     buildTypes {
