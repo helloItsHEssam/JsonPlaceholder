@@ -1,6 +1,6 @@
 name: Build & Publish Release APK
 
-on: [push]
+on: [pull_request]
 
 jobs:
   Gradle:
