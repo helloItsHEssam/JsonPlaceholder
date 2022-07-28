@@ -1,6 +1,7 @@
 name: slack-notification
 
-on: [push, issues]
+#on: [push, issues]
+on: [pull_request]
 
 jobs:
   slack-notifications:
