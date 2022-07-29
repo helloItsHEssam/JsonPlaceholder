@@ -5,7 +5,7 @@ import com.iamhessam.jsonplaceholder.utils.settings.theme.ActiveColor
 
 sealed class SplashResult : MviResult {
     data class Success(val response: String) : SplashResult()
-    data class Color(val activeColor: ActiveColor): SplashResult()
+    data class Color(val activeColor: ActiveColor) : SplashResult()
 }
 
 sealed class SplashAction : MviAction<SplashResult, SplashProcessorType, SplashProcessor> {

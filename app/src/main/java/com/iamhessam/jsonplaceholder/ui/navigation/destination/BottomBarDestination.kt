@@ -1,6 +1,6 @@
 package com.iamhessam.jsonplaceholder.ui.navigation.destination
 
-sealed class BottomBarDestination(val title: String): Destination {
+sealed class BottomBarDestination(val title: String) : Destination {
 
     object Home : BottomBarDestination("home")
     object Settings : BottomBarDestination("setting")

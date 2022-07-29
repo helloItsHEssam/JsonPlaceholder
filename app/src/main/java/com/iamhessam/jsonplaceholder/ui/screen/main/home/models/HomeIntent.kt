@@ -55,7 +55,7 @@ data class HomeViewState(
 
     companion object {
         val init = HomeViewState(true)
-        
+
         val reducer: Reducer<HomeViewState, HomeResult> = { state, result ->
 
             when (result) {

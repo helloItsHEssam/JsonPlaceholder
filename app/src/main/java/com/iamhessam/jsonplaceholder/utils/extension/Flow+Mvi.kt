@@ -8,17 +8,17 @@ import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.map
 
 fun <R : MviResult, T : MviProcessorType, P : MviProcessor<R, T>,
-        A : MviAction<R, T, P>,
-        I : MviIntent<R, T, P, A>> Flow<I>.mapperIntentToAction(): Flow<A> =
+    A : MviAction<R, T, P>,
+    I : MviIntent<R, T, P, A>> Flow<I>.mapperIntentToAction(): Flow<A> =
     map { it.mapToAction() }
 
 fun <R : MviResult, T : MviProcessorType, P : MviProcessor<R, T>,
-        A : MviAction<R, T, P>> Flow<A>.mapperActionToProcessor(): Flow<P> =
+    A : MviAction<R, T, P>> Flow<A>.mapperActionToProcessor(): Flow<P> =
     map { it.mapToProcessor() }
 
 @OptIn(FlowPreview::class)
 fun <R : MviResult, T : MviProcessorType,
-        P : MviProcessor<R, T>> Flow<P>.mapperProcessorToResult(
+    P : MviProcessor<R, T>> Flow<P>.mapperProcessorToResult(
     repository: Repository
 ): Flow<R> = flatMapConcat {
     it.injectRepository(repository)
