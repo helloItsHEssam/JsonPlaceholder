@@ -26,4 +26,4 @@ jobs:
         with:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           slack-channel: general
-          slack-text: Event "${{ steps.condval.outputs.value }}" by ${{github.actor}}  in "${{ github.repository }}"
+          slack-text: Event "${{ steps.condval.outputs.value }}" by ${{github.actor}}  in pull request into ${{github.base_ref}} from ${{github.head_ref}}"
