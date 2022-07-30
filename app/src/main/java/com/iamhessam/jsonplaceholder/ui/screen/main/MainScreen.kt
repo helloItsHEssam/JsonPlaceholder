@@ -20,7 +20,8 @@ import com.iamhessam.jsonplaceholder.ui.navigation.graph.MainNavGraph
 @Composable
 fun MainScreen(navController: NavHostController = rememberNavController()) {
     Scaffold(
-        bottomBar = { BottomBar(navController = navController) }) {
+        bottomBar = { BottomBar(navController = navController) }
+    ) {
         MainNavGraph(navController = navController)
     }
 }

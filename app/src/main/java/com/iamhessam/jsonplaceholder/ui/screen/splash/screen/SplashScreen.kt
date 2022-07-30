@@ -28,6 +28,7 @@ import com.iamhessam.jsonplaceholder.utils.extension.appColors
 import com.iamhessam.jsonplaceholder.utils.extension.collectAsStateLifecycleAware
 import com.iamhessam.jsonplaceholder.utils.extra.permission.RequestPermission
 import com.iamhessam.jsonplaceholder.utils.settings.theme.ActiveColor
+import com.iamhessam.jsonplaceholder.utils.settings.theme.ThemeColor
 
 /**
  *
@@ -41,7 +42,8 @@ fun SplashScreen(navController: NavController) {
 
     // get permission
     val context = LocalContext.current
-    RequestPermission(context = context,
+    RequestPermission(
+        context = context,
         requestPermission = Manifest.permission.CAMERA,
         granted = {
             Log.d("HESSSSAMNEEEEE", "Granted")
@@ -62,15 +64,16 @@ fun SplashScreen(navController: NavController) {
                     Log.d("HESSSSAMNEEEEE", "Denied")
                 }
             }
-
         }
     )
 
     var imageUri by remember {
         mutableStateOf<Uri?>(null)
     }
-    val launcher = rememberLauncherForActivityResult(contract =
-    ActivityResultContracts.GetContent()) { uri: Uri? ->
+    val launcher = rememberLauncherForActivityResult(
+        contract =
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
         imageUri = uri
     }
 
@@ -85,12 +88,11 @@ fun SplashScreen(navController: NavController) {
 
     SplashBodyScreen(state = viewState, callBack = {
         launcher.launch("image/*")
-
     }) {
         if (hello) {
-            model.processorIntent(SplashIntent.UpdateTheme(ActiveColor.User(false)))
+            model.processorIntent(SplashIntent.UpdateTheme(ActiveColor.User(ThemeColor.LIGHT)))
         } else {
-            model.processorIntent(SplashIntent.UpdateTheme(ActiveColor.User(true)))
+            model.processorIntent(SplashIntent.UpdateTheme(ActiveColor.User(ThemeColor.DARK)))
         }
         hello = !hello
 
@@ -103,7 +105,8 @@ fun SplashScreen(navController: NavController) {
 
 @Composable
 private fun SplashBodyScreen(
-    state: State<SplashViewState>, callBack: CallBack,
+    state: State<SplashViewState>,
+    callBack: CallBack,
     callBack2: CallBack
 ) {
     Log.d("HEssam THEME Splash", state.value.toString())
@@ -114,9 +117,6 @@ private fun SplashBodyScreen(
     ) {
         TextBody(text = "splash") {
             callBack()
-
-
-
         }
         Spacer(modifier = Modifier.padding(5.dp))
         TextBody("SplashTwo") {

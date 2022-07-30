@@ -1,0 +1,17 @@
+name: delete_branch_merged
+on:
+  pull_request:
+    branches: [develop]
+    types: [closed]
+
+jobs:
+  slack-notifications:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    name: delete branch
+    steps:
+#      delete branch
+      - name: delete branch
+        uses: SvanBoxel/delete-merged-branch@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}

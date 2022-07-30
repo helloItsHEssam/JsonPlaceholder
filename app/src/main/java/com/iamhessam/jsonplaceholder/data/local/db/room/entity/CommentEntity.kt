@@ -14,4 +14,4 @@ data class CommentEntity(
     @ColumnInfo(name = "comment")
     var comment: String
 
-): IEntity
+) : IEntity

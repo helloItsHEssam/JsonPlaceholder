@@ -1,6 +1,6 @@
 package com.iamhessam.jsonplaceholder.ui.navigation.destination
 
-sealed class ProfileDestination: Destination {
+sealed class ProfileDestination : Destination {
 
     object User : ProfileDestination()
 

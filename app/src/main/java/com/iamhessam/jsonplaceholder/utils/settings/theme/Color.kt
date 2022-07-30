@@ -12,21 +12,26 @@ class DarkColor : AppColor() {
     override var titleColor: Color = Color.White
 }
 
+enum class ThemeColor {
+    DARK,
+    LIGHT
+}
+
 sealed class ActiveColor {
     object System : ActiveColor()
-    data class User(val isDark: Boolean) : ActiveColor()
+    data class User(var themeColor: ThemeColor) : ActiveColor()
 
     val convertToString: String
         get() = when (this) {
             is System -> "System"
-            is User -> if (isDark) "Dark" else "Light"
+            is User -> if (themeColor == ThemeColor.DARK) "Dark" else "Light"
         }
 
     companion object {
         fun createFromString(activeColorString: String): ActiveColor {
             return when (activeColorString) {
-                "Dark" -> User(true)
-                "Light" -> User(false)
+                "Dark" -> User(ThemeColor.DARK)
+                "Light" -> User(ThemeColor.LIGHT)
                 else -> System
             }
         }

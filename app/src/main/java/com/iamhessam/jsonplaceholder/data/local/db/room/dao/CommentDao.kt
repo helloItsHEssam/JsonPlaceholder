@@ -5,7 +5,7 @@ import androidx.room.Query
 import com.iamhessam.jsonplaceholder.data.local.db.room.entity.CommentEntity
 
 @Dao
-interface CommentDao: IDao<CommentEntity> {
+interface CommentDao : IDao<CommentEntity> {
 
     @Query("SELECT * FROM comment where id = :id")
     suspend fun findById(id: Long): CommentEntity?
