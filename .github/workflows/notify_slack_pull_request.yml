@@ -1,0 +1,29 @@
+name: slack_notification_pull_request_state
+on:
+  pull_request:
+    branches: [main, develop]
+    types: [closed]
+
+jobs:
+  slack-notifications:
+    runs-on: ubuntu-latest
+    name: send Message to Slack Channel (general)
+    steps:
+#        create string with condition
+      - uses: haya14busa/action-cond@v1
+        id: condval
+        with:
+          cond: ${{ github.event.pull_request.merged == true }}
+          if_true: "merged pull request"
+          if_false: "rejected pull request"
+      - name: Use conditional value
+        run: echo "${{ steps.condval.outputs.value }}"
+
+#      send to slack
+      - name: Send message to Slack API
+        uses: archive/github-actions-slack@v2.0.0
+        id: notify
+        with:
+          slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
+          slack-channel: general
+          slack-text: Event "${{ steps.condval.outputs.value }}" by ${{github.actor}}  in "${{ github.repository }}"
