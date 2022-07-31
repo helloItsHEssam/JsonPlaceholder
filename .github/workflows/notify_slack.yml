@@ -1,7 +1,6 @@
 name: slack_notification
 on:
   pull_request:
-  issues:
     branches: [main, develop]
 
 jobs:

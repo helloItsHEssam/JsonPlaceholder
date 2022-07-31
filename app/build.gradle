@@ -35,12 +35,12 @@ android {
     productFlavors {
         Product {
             versionCode 1
-            versionName "1.0"
+            versionName "2.0"
         }
 
         Develop {
             versionCode 1
-            versionName "1.0"
+            versionName "12.0"
             applicationIdSuffix ".dev"
             versionNameSuffix '_dev'
         }
@@ -94,6 +94,13 @@ android {
         }
     }
 }
+
+task printVersionName {
+    doLast {
+        print android.defaultConfig.versionName
+    }
+}
+
 
 dependencies {
 
