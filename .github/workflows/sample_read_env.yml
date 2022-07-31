@@ -1,6 +1,6 @@
 name: generate APK
 on:
-  pull_request:
+  push:
     branches: [feature/workflows]
 
 jobs:
@@ -16,10 +16,10 @@ jobs:
           java-version: 11
 
       - name: Generate Debug APK
-        run: ./gradlew clean assembleDebug
+        run: ./gradlew clean assembleDevelopDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v1
         with:
           name: apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: app/build/outputs/apk/Develop/debug/Arashnia_debug_${{env.versionName}}_dev.apk

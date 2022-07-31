@@ -31,34 +31,32 @@ android {
 
     // variants
     // flavors
-//    flavorDimensions 'default'
-//    productFlavors {
-//        Product {
-//            versionCode 1
-//            versionName "1.0"
-//        }
-//
-//        Develop {
-//            versionCode 1
-//            versionName "1.0"
-//            applicationIdSuffix ".test"
-//            versionNameSuffix '_test'
-//        }
-//    }
+    flavorDimensions 'default'
+    productFlavors {
+        Product {
+            versionCode 1
+            versionName "1.0"
+        }
+
+        Develop {
+            versionCode 1
+            versionName "1.0"
+            applicationIdSuffix ".dev"
+            versionNameSuffix '_dev'
+        }
+    }
 
     // edit apk name
-//    android.applicationVariants.all { variant ->
-//        variant.outputs.all {
-//            def newName = "Arashnia_" +
-//                    variant.buildType.name +
-//                    "_" +
-//                    variant.versionName +
-//                    "_" +
-//                    variant.versionCode +
-//                    ".apk"
-//            outputFileName = newName
-//        }
-//    }
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            def newName = "Arashnia_" +
+                    variant.buildType.name +
+                    "_" +
+                    variant.versionName +
+                    ".apk"
+            outputFileName = newName
+        }
+    }
 
     // build type
     buildTypes {
