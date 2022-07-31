@@ -20,6 +20,9 @@ android {
         minSdk 21
         targetSdk 32
 
+        versionCode 1
+        versionName "1.0"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
@@ -28,20 +31,20 @@ android {
 
     // variants
     // flavors
-    flavorDimensions 'default'
-    productFlavors {
-        Product {
-            versionCode 1
-            versionName "1.0"
-        }
-
-        Develop {
-            versionCode 1
-            versionName "1.0"
-            applicationIdSuffix ".test"
-            versionNameSuffix '_test'
-        }
-    }
+//    flavorDimensions 'default'
+//    productFlavors {
+//        Product {
+//            versionCode 1
+//            versionName "1.0"
+//        }
+//
+//        Develop {
+//            versionCode 1
+//            versionName "1.0"
+//            applicationIdSuffix ".test"
+//            versionNameSuffix '_test'
+//        }
+//    }
 
     // edit apk name
 //    android.applicationVariants.all { variant ->
