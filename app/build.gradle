@@ -92,7 +92,7 @@ android {
     }
 }
 
-task printVersionName2 {
+task printVersionName {
     println android.productFlavors.Develop.versionName
 }
 
