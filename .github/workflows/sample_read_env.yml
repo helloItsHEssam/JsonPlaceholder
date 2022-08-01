@@ -18,9 +18,15 @@ jobs:
 #      - name: Generate Debug APK
 #        run: ./gradlew clean assembleDevelopDebug
 #
-      - name : Retrieve Version
+      - name : Retrieve
+        id: heee
         run: |
           echo "::set-output name=VERSION_NAME::$(${{github.workspace}}/gradlew -q printVersionName)"
+
+       - name: Get version
+         run: |
+          echo "version_name=${{steps.heee.outputs.VERSION_NAME}}" >> $GITHUB_ENV
+
 
 #
 #      - name: Get version
@@ -34,7 +40,7 @@ jobs:
         env:
           OUTCOME: ${{ steps.hessam.outcome }}
         run: |
-          echo "$OUTCOME"
+          ${{env.version_name}}
 
 #      - name: Upload APK
 #        uses: actions/upload-artifact@v1
