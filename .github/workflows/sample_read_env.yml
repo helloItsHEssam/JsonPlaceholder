@@ -27,14 +27,8 @@ jobs:
 #        run: |
 #          echo "version_name=${{steps.android_version.outputs.VERSION_NAME}}" >> $GITHUB_ENV
 
-      - name: Retrieve Version
-        run: |
-          echo "::set-output name=VERSION_NAME::$(./gradlew -q printVersionName)"
-          id: android_version
-
-
       - name: hessam
-        run: ./gradlew -q printVersionName
+        run: echo "${{./gradlew -q printVersionName}}"
 
 #      - name: Upload APK
 #        uses: actions/upload-artifact@v1
