@@ -28,8 +28,7 @@ jobs:
 #          echo "version_name=${{steps.android_version.outputs.VERSION_NAME}}" >> $GITHUB_ENV
 
       - name: hessam
-        run: |
-          echo "(${{github.workspace}}/gradlew -q printVersionName)"
+        run: ./gradlew -q printVersionName
 
       - name: print-result
         env:
