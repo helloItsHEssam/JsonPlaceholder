@@ -24,7 +24,7 @@ jobs:
 #          id: android_version
 
       - name: Get version
-        run: echo "${{productFlavors.Develop.versionName}}"
+        run: productFlavors.Develop.versionName
 
 
 #      - name: Upload APK
