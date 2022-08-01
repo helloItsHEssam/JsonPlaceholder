@@ -20,8 +20,7 @@ jobs:
 #
       - name : Retrieve Version
         run: |
-          echo "::set-output name=VERSION_NAME::$(${{github.workspace}}./gradlew -q printVersionName)"
-          id: android_version
+          echo "::set-output name=VERSION_NAME::$(${{github.workspace}}/gradlew -q printVersionName)"
 
 #
 #      - name: Get version
