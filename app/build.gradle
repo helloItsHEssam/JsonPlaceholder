@@ -92,6 +92,10 @@ android {
     }
 }
 
+task printVersionName {
+    println android.productFlavors.Develop.versionName
+}
+
 dependencies {
 
     implementation "androidx.core:core-ktx:$ktx_version"
