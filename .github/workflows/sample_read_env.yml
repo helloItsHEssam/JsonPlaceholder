@@ -28,7 +28,8 @@ jobs:
 #          echo "version_name=${{steps.android_version.outputs.VERSION_NAME}}" >> $GITHUB_ENV
 
       - name: hessam
-        run: echo "${{./gradlew -q printVersionName}}"
+        run: |
+          echo "${{./gradlew -q printVersionName}}"
 
 #      - name: Upload APK
 #        uses: actions/upload-artifact@v1
