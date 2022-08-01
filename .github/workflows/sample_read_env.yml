@@ -19,13 +19,12 @@ jobs:
 #        run: ./gradlew clean assembleDevelopDebug
 #
       - name : Retrieve
-        id: heee
         run: |
           echo "::set-output name=VERSION_NAME::$(${{github.workspace}}/gradlew -q printVersionName)"
 
        - name: Get version
          run: |
-          echo "version_name=${{steps.heee.outputs.VERSION_NAME}}" >> $GITHUB_ENV
+          echo "version_name=${{steps.Retrieve.outputs.VERSION_NAME}}" >> $GITHUB_ENV
 
 
 #
