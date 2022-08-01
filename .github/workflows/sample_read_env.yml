@@ -30,10 +30,7 @@ jobs:
         run: ./gradlew -q printVersionName
 
       - name: print-result
-        env:
-          OUTCOME: ${{ steps.hessam.outcome }}
-        run: |
-          echo ${{env.version_name}}
+        run: echo ${{env.version_name}}
 
 #      - name: Upload APK
 #        uses: actions/upload-artifact@v1
