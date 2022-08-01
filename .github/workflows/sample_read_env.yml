@@ -39,7 +39,7 @@ jobs:
         env:
           OUTCOME: ${{ steps.hessam.outcome }}
         run: |
-          ${{env.version_name}}
+          echo ${{env.version_name}}
 
 #      - name: Upload APK
 #        uses: actions/upload-artifact@v1
