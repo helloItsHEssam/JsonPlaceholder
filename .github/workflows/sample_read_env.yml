@@ -15,9 +15,9 @@ jobs:
         with:
           java-version: 11
 
-#      - name: Generate Debug APK
-#        run: ./gradlew clean assembleDevelopDebug
-#
+      - name: Generate Debug APK
+        run: ./gradlew clean assembleDevelopDebug
+
       - name : Retrieve
         run: |
           echo "::set-output name=VERSION_NAME::$(${{github.workspace}}/gradlew -q printVersionName)"
@@ -29,11 +29,8 @@ jobs:
       - name: hessam
         run: ./gradlew -q printVersionName
 
-      - name: print-result
-        run: echo ${{env.version_name}}
-
-#      - name: Upload APK
-#        uses: actions/upload-artifact@v1
-#        with:
-#          name: apk
-#          path: app/build/outputs/apk/Develop/debug/Arashnia_debug_${{env.version_name}}_dev.apk
+      - name: Upload APK
+        uses: actions/upload-artifact@v1
+        with:
+          name: apk
+          path: app/build/outputs/apk/Develop/debug/Arashnia_debug_${{env.version_name}}_dev.apk
