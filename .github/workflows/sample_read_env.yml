@@ -24,7 +24,7 @@ jobs:
 #          id: android_version
 
       - name: Get version
-        run: ./gradlew -q printVersionName
+        run: echo "${{productFlavors.Develop.versionName}}"
 
 
 #      - name: Upload APK

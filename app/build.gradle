@@ -20,9 +20,6 @@ android {
         minSdk 21
         targetSdk 32
 
-        versionCode 1
-        versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
@@ -94,13 +91,6 @@ android {
         }
     }
 }
-
-task printVersionName {
-    doLast {
-        print android.defaultConfig.versionName
-    }
-}
-
 
 dependencies {
 
