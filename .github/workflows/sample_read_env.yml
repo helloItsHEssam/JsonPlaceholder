@@ -18,17 +18,17 @@ jobs:
 #      - name: Generate Debug APK
 #        run: ./gradlew clean assembleDevelopDebug
 #
-      - name: Retrieve Version
-        run: |
-          echo "::set-output name=VERSION_NAME::$(${{github.workspace}}/gradlew -q printVersionName)"
-            id: android_version
-
-      - name: Get version
-        run: |
-          echo "version_name=${{steps.android_version.outputs.VERSION_NAME}}" >> $GITHUB_ENV
+#      - name: Retrieve Version
+#        run: |
+#          echo "::set-output name=VERSION_NAME::$(${{github.workspace}}/gradlew -q printVersionName)"
+#            id: android_version
+#
+#      - name: Get version
+#        run: |
+#          echo "version_name=${{steps.android_version.outputs.VERSION_NAME}}" >> $GITHUB_ENV
 
       - name: hessam
-        run: echo ${{env.version_name}}
+        run: ./gradlew -q printVersionName
 
 #      - name: Upload APK
 #        uses: actions/upload-artifact@v1
