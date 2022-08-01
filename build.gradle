@@ -52,3 +52,7 @@ subprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+//task printVersionName {
+//    project(':app').printVersionName2
+//}
