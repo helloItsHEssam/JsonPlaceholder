@@ -33,6 +33,7 @@ android {
         Product {
             versionCode 1
             versionName "2.0"
+            versionNameSuffix '_pro'
         }
 
         Develop {
@@ -92,8 +93,12 @@ android {
     }
 }
 
-task printVersionName {
+task printVersionNameDevelop {
     println android.productFlavors.Develop.versionName
+}
+
+task printVersionNameProduct {
+    println android.productFlavors.Product.versionName
 }
 
 dependencies {
