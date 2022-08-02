@@ -21,20 +21,20 @@ jobs:
       - name : Retrieve Develop Version
         id: developVersion
         run: |
-          echo "::set-output name=VERSION_NAME::$(${{github.workspace}}/gradlew -q printVersionNameDevelop)"
+          echo "::set-output name=VERSION_NAME_DEVELOP::$(${{github.workspace}}/gradlew -q printVersionNameDevelop)"
 
       - name: Get version Develop
         run: |
-          echo "version_name_develop=${{steps.developVersion.outputs.VERSION_NAME}}" >> $GITHUB_ENV
+          echo "version_name_develop=${{steps.developVersion.outputs.VERSION_NAME_DEVELOP}}" >> $GITHUB_ENV
 
       - name: Retrieve Product Version
         id: ProductVersion
         run: |
-            echo "::set-output name=VERSION_NAME::$(${{github.workspace}}/gradlew -q printVersionNameProduct)"
+            echo "::set-output name=VERSION_NAME_PRODUCT::$(${{github.workspace}}/gradlew -q printVersionNameProduct)"
 
       - name: Get version Product
         run: |
-          echo "version_name_product=${{steps.ProductVersion.outputs.VERSION_NAME}}" >> $GITHUB_ENV
+          echo "version_name_product=${{steps.ProductVersion.outputs.VERSION_NAME_PRODUCT}}" >> $GITHUB_ENV
 
       - name: Upload Develop APK to slack
         uses: adrey/slack-file-upload-action@master
