@@ -94,11 +94,15 @@ android {
 }
 
 task printVersionNameDevelop {
-    println android.productFlavors.Develop.versionName
+    doLast {
+        println android.productFlavors.Develop.versionName
+    }
 }
 
 task printVersionNameProduct {
-    println android.productFlavors.Product.versionName
+    doLast {
+        println android.productFlavors.Product.versionName
+    }
 }
 
 dependencies {
