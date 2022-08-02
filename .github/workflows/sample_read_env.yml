@@ -1,4 +1,4 @@
-name: generate APK
+name: generate Docs
 on:
   push:
     branches: [feature/workflows]
@@ -15,41 +15,11 @@ jobs:
         with:
           java-version: 11
 
-      - name: Generate Debug APK
-        run: ./gradlew clean assembleDebug
-
-      - name : Retrieve Develop Version
-        id: developVersion
-        run: |
-          echo "::set-output name=VERSION_NAME_DEVELOP::$(${{github.workspace}}/gradlew -q printVersionNameDevelop)"
-
-      - name: Get version Develop
-        run: |
-          echo "version_name_develop=${{steps.developVersion.outputs.VERSION_NAME_DEVELOP}}" >> $GITHUB_ENV
-
-      - name: Retrieve Product Version
-        id: ProductVersion
-        run: |
-            echo "::set-output name=VERSION_NAME_PRODUCT::$(${{github.workspace}}/gradlew -q printVersionNameProduct)"
-
-      - name: Get version Product
-        run: |
-          echo "version_name_product=${{steps.ProductVersion.outputs.VERSION_NAME_PRODUCT}}" >> $GITHUB_ENV
-
-      - name: Upload Develop APK to slack
-        uses: MeilCli/slack-upload-file@v2
+      - name: Build documentation
+        run: ./gradlew dokkagfm
+      - name: Publish documentation
+        uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
-          slack_token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
-          file_path: app/build/outputs/apk/Develop/debug/Arashnia_debug_${{env.version_name_develop}}_dev.apk
-          channels: general
-          file_type: 'apk'
-          initial_comment: 'develop version'
-
-      - name: Upload Product APK to slack
-        uses: MeilCli/slack-upload-file@v2
-        with:
-          slack_token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
-          file_path: app/build/outputs/apk/Product/debug/Arashnia_debug_${{env.version_name_product}}_pro.apk
-          channels: general
-          file_type: 'apk'
-          initial_comment: 'product version'
+          ACCESS_TOKEN: ${{ secrets.TOKEN }}
+          BRANCH: feature/workflows
+          FOLDER: app/build/dokka/gfm
