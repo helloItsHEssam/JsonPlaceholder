@@ -22,4 +22,4 @@ jobs:
         with:
           path: "app/build/dokka/gfm"
         env:
-          GH_PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          GH_PERSONAL_ACCESS_TOKEN: ${{ secrets.TOKEN }}
