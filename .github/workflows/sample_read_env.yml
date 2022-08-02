@@ -41,7 +41,7 @@ jobs:
         with:
           slack_token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           file_path: app/build/outputs/apk/Develop/debug/Arashnia_debug_${{env.version_name_develop}}_dev.apk
-          channel: general
+          channels: general
           file_type: 'apk'
           initial_comment: 'develop version'
 
@@ -50,6 +50,6 @@ jobs:
         with:
           slack_token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           file_path: app/build/outputs/apk/Product/debug/Arashnia_debug_${{env.version_name_product}}_pro.apk
-          channel: general
+          channels: general
           file_type: 'apk'
           initial_comment: 'product version'
