@@ -39,7 +39,7 @@ jobs:
       - name: Upload Develop APK to slack
         uses: MeilCli/slack-upload-file@v2
         with:
-          token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
+          slack_token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           file_path: app/build/outputs/apk/Develop/debug/Arashnia_debug_${{env.version_name_develop}}_dev.apk
           channel: general
           file_type: 'apk'
@@ -48,7 +48,7 @@ jobs:
       - name: Upload Product APK to slack
         uses: MeilCli/slack-upload-file@v2
         with:
-          token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
+          slack_token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           file_path: app/build/outputs/apk/Product/debug/Arashnia_debug_${{env.version_name_product}}_pro.apk
           channel: general
           file_type: 'apk'
