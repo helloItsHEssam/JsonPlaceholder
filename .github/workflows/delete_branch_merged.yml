@@ -62,3 +62,31 @@ jobs:
           channels: general
           file_type: 'apk'
           initial_comment: 'product version'
+
+      - name: Build documentation gfm
+        run: ./gradlew dokkagfm
+
+      - name: github-docs-to-wiki
+        uses: cmbrose/github-docs-to-wiki@v0.24
+        with:
+          githubToken: ${{ secrets.TOKEN }}
+          rootDocsFolder: app/build/dokka/gfm
+          useHeaderForWikiName: true
+
+      - name: Build documentation Html for Slack
+        run: ./gradlew dokkaHtml
+
+      - name: convert to zip document
+        uses: vimtor/action-zip@v1
+        with:
+          files: app/build/dokka/html
+          dest: docs.zip
+
+      - name: documents to Slack
+        uses: MeilCli/slack-upload-file@v2
+        with:
+          slack_token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
+          file_path: app/build/dokka/docs.zip
+          channels: general
+          file_type: 'zip'
+          initial_comment: 'Document'
