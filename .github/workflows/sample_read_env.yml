@@ -17,16 +17,22 @@ jobs:
       - name: Build documentation
         run: ./gradlew dokkagfm
 
-      - name: Upload Release Notes to Wiki
-        uses: docker://decathlon/wiki-page-creator-action:latest
-        env:
-          ACTION_MAIL: h.mahdiabadi@users.noreply.github.com
-          ACTION_NAME: Bot Action
-          GH_PAT: ${{ secrets.TOKEN }}
-          MD_FOLDER: app/build/dokka/gfm
-          OWNER: iamHEssam
-          REPO_NAME: JsonPlaceholder
-          SKIP_MD: README.md
+      - name: github-docs-to-wiki
+        uses: cmbrose/github-docs-to-wiki@v0.24
+        with:
+          githubToken: ${{ secrets.TOKEN }}
+          rootDocsFolder: app/build/dokka/gfm
+
+#      - name: Upload Release Notes to Wiki
+#        uses: docker://decathlon/wiki-page-creator-action:latest
+#        env:
+#          ACTION_MAIL: h.mahdiabadi@users.noreply.github.com
+#          ACTION_NAME: Bot Action
+#          GH_PAT: ${{ secrets.TOKEN }}
+#          MD_FOLDER: app/build/dokka/gfm
+#          OWNER: iamHEssam
+#          REPO_NAME: JsonPlaceholder
+#          SKIP_MD: README.md
 
 #  generate-apk:
 #    runs-on: ubuntu-latest
