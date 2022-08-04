@@ -1,4 +1,4 @@
-name: delete_branch_merged
+name: deploy Debug APK
 on:
   pull_request:
     branches: [develop]
@@ -10,8 +10,83 @@ jobs:
     runs-on: ubuntu-latest
     name: delete branch
     steps:
+      - uses: actions/checkout@v1
+
+      - name: set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
 #      delete branch
       - name: delete branch
         uses: SvanBoxel/delete-merged-branch@main
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
+
+#       generate apk
+      - name: Generate Debug APK
+        run: ./gradlew clean assembleDebug
+
+      - name : Retrieve Develop Version
+        id: developVersion
+        run: |
+          echo "::set-output name=VERSION_NAME_DEVELOP::$(${{github.workspace}}/gradlew -q printVersionNameDevelop)"
+
+      - name: Get version Develop
+        run: |
+          echo "version_name_develop=${{steps.developVersion.outputs.VERSION_NAME_DEVELOP}}" >> $GITHUB_ENV
+
+      - name: Retrieve Product Version
+        id: ProductVersion
+        run: |
+          echo "::set-output name=VERSION_NAME_PRODUCT::$(${{github.workspace}}/gradlew -q printVersionNameProduct)"
+
+      - name: Get version Product
+        run: |
+          echo "version_name_product=${{steps.ProductVersion.outputs.VERSION_NAME_PRODUCT}}" >> $GITHUB_ENV
+
+      - name: Upload Develop APK to slack
+        uses: MeilCli/slack-upload-file@v2
+        with:
+          slack_token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
+          file_path: app/build/outputs/apk/Develop/debug/Arashnia_debug_${{env.version_name_develop}}_dev.apk
+          channels: general
+          file_type: 'apk'
+          initial_comment: 'develop version'
+
+      - name: Upload Product APK to slack
+        uses: MeilCli/slack-upload-file@v2
+        with:
+          slack_token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
+          file_path: app/build/outputs/apk/Product/debug/Arashnia_debug_${{env.version_name_product}}_pro.apk
+          channels: general
+          file_type: 'apk'
+          initial_comment: 'product version'
+
+      - name: Build documentation gfm
+        run: ./gradlew dokkagfm
+
+      - name: github-docs-to-wiki
+        uses: cmbrose/github-docs-to-wiki@v0.24
+        with:
+          githubToken: ${{ secrets.TOKEN }}
+          rootDocsFolder: app/build/dokka/gfm
+          useHeaderForWikiName: true
+
+      - name: Build documentation Html for Slack
+        run: ./gradlew dokkaHtml
+
+      - name: convert to zip document
+        uses: vimtor/action-zip@v1
+        with:
+          files: app/build/dokka/html
+          dest: docs.zip
+
+      - name: documents to Slack
+        uses: MeilCli/slack-upload-file@v2
+        with:
+          slack_token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
+          file_path: app/build/dokka/docs.zip
+          channels: general
+          file_type: 'zip'
+          initial_comment: 'Document'
