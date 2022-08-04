@@ -2,6 +2,8 @@ name: generate Docs
 on:
   push:
     branches: [feature/workflows]
+permissions:
+  contents: write
 
 jobs:
   publish:
