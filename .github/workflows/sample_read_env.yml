@@ -22,6 +22,7 @@ jobs:
         with:
           githubToken: ${{ secrets.TOKEN }}
           rootDocsFolder: app/build/dokka/gfm
+          useHeaderForWikiName: true
 
 #      - name: Upload Release Notes to Wiki
 #        uses: docker://decathlon/wiki-page-creator-action:latest
