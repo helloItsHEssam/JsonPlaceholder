@@ -4,9 +4,8 @@ on:
     branches: [feature/workflows]
 
 jobs:
-  generate-apk:
+  release-notes:
     runs-on: ubuntu-latest
-    name: APK
     steps:
       - uses: actions/checkout@v1
 
@@ -17,9 +16,34 @@ jobs:
 
       - name: Build documentation
         run: ./gradlew dokkagfm
-      - name: Upload Documentation to Wiki
-        uses: SwiftDocOrg/github-wiki-publish-action@v1
-        with:
-          path: "app/build/dokka/gfm"
+
+      - name: Upload Release Notes to Wiki
+        uses: docker://decathlon/wiki-page-creator-action:latest
         env:
-          GH_PERSONAL_ACCESS_TOKEN: ${{ secrets.TOKEN }}
+          ACTION_MAIL: h.mahdiabadi@users.noreply.github.com
+          ACTION_NAME: Bot Action
+          GH_PAT: ${{ secrets.TOKEN }}
+          MD_FOLDER: app/build/dokka/gfm
+          OWNER: iamHEssam
+          REPO_NAME: JsonPlaceholer
+          SKIP_MD: README.md
+
+#  generate-apk:
+#    runs-on: ubuntu-latest
+#    name: APK
+#    steps:
+#      - uses: actions/checkout@v1
+#
+#      - name: set up JDK 11
+#        uses: actions/setup-java@v1
+#        with:
+#          java-version: 11
+#
+#      - name: Build documentation
+#        run: ./gradlew dokkagfm
+#      - name: Upload Documentation to Wiki
+#        uses: SwiftDocOrg/github-wiki-publish-action@v1
+#        with:
+#          path: "app/build/dokka/gfm"
+#        env:
+#          GH_PERSONAL_ACCESS_TOKEN: ${{ secrets.TOKEN }}

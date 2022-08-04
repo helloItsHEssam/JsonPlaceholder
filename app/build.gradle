@@ -7,6 +7,9 @@ plugins {
 
     // hilt
     id 'dagger.hilt.android.plugin'
+
+    // dokka
+    id "org.jetbrains.dokka"
 }
 
 android {
