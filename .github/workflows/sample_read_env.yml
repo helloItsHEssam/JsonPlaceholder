@@ -25,7 +25,7 @@ jobs:
           GH_PAT: ${{ secrets.TOKEN }}
           MD_FOLDER: app/build/dokka/gfm
           OWNER: iamHEssam
-          REPO_NAME: JsonPlaceholer
+          REPO_NAME: JsonPlaceholder
           SKIP_MD: README.md
 
 #  generate-apk:
