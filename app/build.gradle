@@ -1,6 +1,15 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+
+    // annotation processor
+    id 'kotlin-kapt'
+
+    // hilt
+    id 'dagger.hilt.android.plugin'
+
+    // dokka
+    id "org.jetbrains.dokka"
 }
 
 android {
@@ -10,8 +19,6 @@ android {
         applicationId "com.iamhessam.jsonplaceholder"
         minSdk 21
         targetSdk 32
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -19,25 +26,66 @@ android {
         }
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    // variants
+    // flavors
+    flavorDimensions 'default'
+    productFlavors {
+        Product {
+            versionCode 1
+            versionName "2.0"
+            versionNameSuffix '_pro'
+        }
+
+        Develop {
+            versionCode 1
+            versionName "12.0"
+            applicationIdSuffix ".dev"
+            versionNameSuffix '_dev'
         }
     }
+
+    // edit apk name
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            def newName = "Arashnia_" +
+                    variant.buildType.name +
+                    "_" +
+                    variant.versionName +
+                    ".apk"
+            outputFileName = newName
+        }
+    }
+
+    // build type
+    buildTypes {
+        release {
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            minifyEnabled false
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
     buildFeatures {
         compose true
     }
+
     composeOptions {
-        kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerExtensionVersion = "1.2.0"
     }
+
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
@@ -45,17 +93,79 @@ android {
     }
 }
 
+// version name develop
+task printVersionNameDevelop {
+    doLast {
+        println android.productFlavors.Develop.versionName
+    }
+}
+
+// version name product
+task printVersionNameProduct {
+    doLast {
+        println android.productFlavors.Product.versionName
+    }
+}
+
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation "androidx.core:core-ktx:$ktx_version"
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
-    implementation 'androidx.activity:activity-compose:1.3.1'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_ktx_version"
+    implementation "androidx.activity:activity-compose:$activity_compose_version"
+
+    // compose navigation
+    implementation "androidx.navigation:navigation-compose:$nav_version"
+    implementation "androidx.hilt:hilt-navigation-compose:$compose_hilt_navigation_version"
+
+    // ktx Collection
+    implementation "androidx.collection:collection-ktx:$ktx_collection_version"
+
+    implementation "com.google.accompanist:accompanist-permissions:$accompanist_version"
+
+    // life cycle
+    // ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    // ViewModel utilities for Compose
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
+    // LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    // Lifecycles only (without ViewModel or LiveData)
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+
+    // coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+
+    // room
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    testImplementation "androidx.room:room-testing:$room_version"
+
+    // hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+    // datastore
+    implementation "androidx.datastore:datastore-preferences:$datastore_version"
+
+    // kotlin_serialization
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlin_serialization_version"
+
+    // ktor
+    implementation "io.ktor:ktor-client-core:$ktor_version"
+    implementation "io.ktor:ktor-client-cio:$ktor_version"
+    implementation "io.ktor:ktor-client-resources:$ktor_version"
+    implementation "io.ktor:ktor-client-auth:$ktor_version"
+    implementation "io.ktor:ktor-client-encoding:$ktor_version"
+    implementation "io.ktor:ktor-client-logging:$ktor_version"
+    testImplementation "io.ktor:ktor-client-mock:$ktor_version"
+
+    testImplementation "junit:junit:$junit_version"
+    androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"

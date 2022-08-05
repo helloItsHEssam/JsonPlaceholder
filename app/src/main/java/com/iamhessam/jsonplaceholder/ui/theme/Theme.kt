@@ -2,46 +2,36 @@ package com.iamhessam.jsonplaceholder.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-
-private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
-    secondary = Teal200
-)
-
-private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200
-
-    /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
-)
+import androidx.compose.runtime.CompositionLocalProvider
+import com.iamhessam.jsonplaceholder.utils.extension.LocalColoring
+import com.iamhessam.jsonplaceholder.utils.extension.LocalShaping
+import com.iamhessam.jsonplaceholder.utils.extension.LocalTypography
+import com.iamhessam.jsonplaceholder.utils.settings.theme.*
 
 @Composable
 fun JsonPlaceholderTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    activeColor: ActiveColor,
+    shape: Shape,
+    typography: Typography,
     content: @Composable () -> Unit
 ) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
-    }
 
-    MaterialTheme(
-        colors = colors,
-        typography = Typography,
-        shapes = Shapes,
-        content = content
-    )
+    val color = colorFromActiveColor(activeColor = activeColor)
+
+    CompositionLocalProvider(
+        LocalColoring provides color,
+        LocalShaping provides shape,
+        LocalTypography provides typography
+    ) {
+        MaterialTheme(content = content)
+    }
+}
+
+@Composable
+private fun colorFromActiveColor(activeColor: ActiveColor): AppColor {
+    return when (activeColor) {
+        is ActiveColor.System -> if (!isSystemInDarkTheme()) AppColor() else DarkColor()
+        is ActiveColor.User -> if (activeColor.themeColor == ThemeColor.DARK) DarkColor() else AppColor()
+    }
 }
