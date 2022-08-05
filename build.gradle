@@ -20,7 +20,7 @@ buildscript {
         compose_hilt_navigation_version = "1.0.0"
         accompanist_version = "0.25.0"
         dokka_version = "1.7.0"
-        android_version = "7.2.1"
+        android_version = '7.2.2'
         ktlint_version = "10.3.0"
     }
 
