@@ -10,6 +10,9 @@ plugins {
 
     // dokka
     id "org.jetbrains.dokka"
+
+    // serialization
+    id 'kotlinx-serialization'
 }
 
 android {

@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
 import com.iamhessam.jsonplaceholder.data.local.db.room.AppDB
+import com.iamhessam.jsonplaceholder.data.remote.http.ktor.engine.KtorClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,6 +34,13 @@ class AppModule {
     @Singleton
     fun provideAppDataStore(@ApplicationContext appContext: Context): DataStore<Preferences> {
         return appContext.dataStore
+    }
+
+    // Ktor Client
+    @Provides
+    @Singleton
+    fun provideKtorClient(): KtorClient {
+        return KtorClient()
     }
 
 //     network Connectivity di
