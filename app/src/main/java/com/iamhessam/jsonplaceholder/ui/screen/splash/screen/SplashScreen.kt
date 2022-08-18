@@ -20,6 +20,7 @@ import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.iamhessam.jsonplaceholder.ui.component.text.TextBody
+import com.iamhessam.jsonplaceholder.ui.navigation.destination.AppDestination
 import com.iamhessam.jsonplaceholder.ui.screen.splash.models.SplashIntent
 import com.iamhessam.jsonplaceholder.ui.screen.splash.models.SplashModel
 import com.iamhessam.jsonplaceholder.ui.screen.splash.models.SplashViewState
@@ -87,7 +88,8 @@ fun SplashScreen(navController: NavController) {
     }
 
     SplashBodyScreen(state = viewState, callBack = {
-        launcher.launch("image/*")
+        navController.navigate(AppDestination.Main.route)
+//        launcher.launch("image/*")
     }) {
         if (hello) {
             model.processorIntent(SplashIntent.UpdateTheme(ActiveColor.User(ThemeColor.LIGHT)))
