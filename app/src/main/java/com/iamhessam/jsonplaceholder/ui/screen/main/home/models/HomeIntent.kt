@@ -1,11 +1,13 @@
 package com.iamhessam.jsonplaceholder.ui.screen.main.home.models
 
+import com.iamhessam.jsonplaceholder.data.local.db.room.entity.CommentEntity
 import com.iamhessam.jsonplaceholder.mvi.*
+import com.iamhessam.jsonplaceholder.utils.exception.ArashniaException
 
 sealed class HomeResult : MviResult {
     object Loading : HomeResult()
-    data class Error(val message: String) : HomeResult()
-    data class Success(val response: String) : HomeResult()
+    data class Error(val error: ArashniaException) : HomeResult()
+    data class Success(val response: List<CommentEntity>) : HomeResult()
 }
 
 sealed class HomeAction : MviAction<HomeResult, HomeProcessorType, HomeProcessor> {
@@ -44,8 +46,8 @@ sealed class HomeIntent : MviIntent<HomeResult, HomeProcessorType, HomeProcessor
 
 data class HomeViewState(
     val refreshing: Boolean = true,
-    val data: List<String>? = null,
-    val error: String? = null
+    val data: List<CommentEntity>? = null,
+    val error: ArashniaException? = null
 ) : MviViewState {
 
     companion object {
@@ -59,12 +61,12 @@ data class HomeViewState(
                     state.copy(
                         refreshing = false,
                         error = null,
-                        data = listOf(result.response)
+                        data = result.response
                     )
                 }
                 is HomeResult.Error -> state.copy(
                     refreshing = false,
-                    error = result.message
+                    error = result.error
                 )
             }
         }

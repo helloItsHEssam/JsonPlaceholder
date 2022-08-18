@@ -1,18 +1,22 @@
 package com.iamhessam.jsonplaceholder.ui.screen.main.home.models
 
+import android.util.Log
 import com.iamhessam.jsonplaceholder.data.Repository
+import com.iamhessam.jsonplaceholder.data.remote.http.ktor.dto.CommentDTO
+import com.iamhessam.jsonplaceholder.data.remote.http.ktor.router.Post
 import com.iamhessam.jsonplaceholder.mvi.MviProcessor
 import com.iamhessam.jsonplaceholder.mvi.MviProcessorType
+import com.iamhessam.jsonplaceholder.utils.exception.ArashniaException
+import com.iamhessam.jsonplaceholder.utils.extra.mapper.CommentMapper
 import io.ktor.client.call.*
-import io.ktor.client.request.*
-import io.ktor.http.*
+import io.ktor.client.plugins.resources.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 sealed class HomeProcessorType : MviProcessorType {
     object FetchComment : HomeProcessorType()
-    object Init: HomeProcessorType()
+    object Init : HomeProcessorType()
 }
 
 class HomeProcessor(override var processorType: HomeProcessorType) :
@@ -34,14 +38,22 @@ class HomeProcessor(override var processorType: HomeProcessorType) :
     private suspend fun fetchComment(): Flow<HomeResult> {
         return flow {
             emit(HomeResult.Loading)
-            val response = repository.remote.http.httpClient.get {
-                url {
-                    protocol = URLProtocol.HTTPS
-                    host = "jsonplaceholder.typicode.com"
-                    path("posts/1/comments")
-                }
+            val path = Post.Id.Comments(Post.Id(id = 1))
+            try {
+                val response: List<CommentDTO> =
+                    repository.remote.http.httpClient.get(path) {
+                        url {
+                            parameters.append("id", "1")
+                        }
+                    }.body()
+
+                val commentEntities = CommentMapper().mapDtoListToEntityList(response)
+                Log.d("sample Log", "${commentEntities.size}")
+                emit(HomeResult.Success(commentEntities))
+
+            } catch (e: ArashniaException) {
+                emit(HomeResult.Error(e))
             }
-            emit(HomeResult.Success(response.body()))
         }
     }
 
@@ -49,7 +61,7 @@ class HomeProcessor(override var processorType: HomeProcessorType) :
         return flow {
             emit(HomeResult.Loading)
             delay(5_000)
-            emit(HomeResult.Error("Hello Message Error"))
+            emit(HomeResult.Error(ArashniaException.NotFoundException("error")))
         }
     }
 }
