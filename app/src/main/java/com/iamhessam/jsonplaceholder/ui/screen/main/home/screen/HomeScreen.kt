@@ -6,14 +6,37 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.iamhessam.jsonplaceholder.ui.navigation.destination.BottomBarDestination
+import com.iamhessam.jsonplaceholder.ui.screen.main.home.models.HomeIntent
+import com.iamhessam.jsonplaceholder.ui.screen.main.home.models.HomeModel
+import com.iamhessam.jsonplaceholder.ui.screen.main.home.models.HomeViewState
+import com.iamhessam.jsonplaceholder.utils.constant.CallBack
+import com.iamhessam.jsonplaceholder.utils.extension.collectAsStateLifecycleAware
 
 @Composable
 fun HomeScreen(navController: NavController) {
+    val model = hiltViewModel<HomeModel>()
+
+    val viewState =
+        model.states().collectAsStateLifecycleAware(HomeViewState.init)
+
+    HomeBodyScreen(state = viewState) {
+        model.processorIntent(HomeIntent.FetchComment)
+//                navController.navigate(BottomBarDestination.Home.route)
+    }
+}
+
+@Composable
+fun HomeBodyScreen(
+    state: State<HomeViewState>,
+    callBack: CallBack,
+) {
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -22,7 +45,7 @@ fun HomeScreen(navController: NavController) {
     ) {
         Text(
             modifier = Modifier.clickable {
-                navController.navigate(BottomBarDestination.Home.route)
+                callBack()
             },
             text = "Home",
             color = Color.White
