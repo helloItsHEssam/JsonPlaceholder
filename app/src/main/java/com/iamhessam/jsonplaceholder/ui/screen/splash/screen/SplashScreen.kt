@@ -2,7 +2,6 @@ package com.iamhessam.jsonplaceholder.ui.screen.splash.screen
 
 import android.Manifest
 import android.net.Uri
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -47,22 +46,22 @@ fun SplashScreen(navController: NavController) {
         context = context,
         requestPermission = Manifest.permission.CAMERA,
         granted = {
-            Log.d("HESSSSAMNEEEEE", "Granted")
+            // Granted
         },
         showRational = {
-            Log.d("HESSSSAMNEEEEE", "Show rational")
+            // Show rational
         },
         permanentlyDenied = {
-            Log.d("HESSSSAMNEEEEE", "Denied")
+            // Denied
         },
         chooseState = { st ->
             when (st) {
                 is PermissionStatus.Granted -> {
-                    Log.d("HESSSSAMNEEEEE", "Granted")
+                    // Granted
                 }
 
                 is PermissionStatus.Denied -> {
-                    Log.d("HESSSSAMNEEEEE", "Denied")
+                    // Denied
                 }
             }
         }
@@ -111,7 +110,6 @@ private fun SplashBodyScreen(
     callBack: CallBack,
     callBack2: CallBack
 ) {
-    Log.d("HEssam THEME Splash", state.value.toString())
     Column(
         modifier = Modifier
             .fillMaxSize()

@@ -9,6 +9,7 @@ import io.ktor.client.engine.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.plugins.cookies.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.plugins.resources.*
 import io.ktor.client.request.*
@@ -25,7 +26,7 @@ class KtorClient {
         configureHttpClient()
     }
 
-    public fun setEngine(engine: HttpClientEngine) {
+    public fun setEngineForTest(engine: HttpClientEngine) {
         httpClient = HttpClient(engine) {
             install(Resources)
 
@@ -117,5 +118,9 @@ class KtorClient {
                 }
             }
         }
+    }
+
+    private fun installCookie(client: HttpClientConfig<CIOEngineConfig>) {
+        client.install(HttpCookies)
     }
 }

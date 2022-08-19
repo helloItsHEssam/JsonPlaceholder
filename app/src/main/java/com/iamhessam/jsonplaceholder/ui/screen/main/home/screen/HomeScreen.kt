@@ -1,6 +1,5 @@
 package com.iamhessam.jsonplaceholder.ui.screen.main.home.screen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -37,7 +36,6 @@ fun HomeBodyScreen(
     state: State<HomeViewState>,
     callBack: CallBack,
 ) {
-    Log.d("FetchDataKtor is", state.value.toString())
 
     Box(
         modifier = Modifier

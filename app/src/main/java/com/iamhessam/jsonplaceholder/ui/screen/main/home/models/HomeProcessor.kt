@@ -1,6 +1,5 @@
 package com.iamhessam.jsonplaceholder.ui.screen.main.home.models
 
-import android.util.Log
 import com.iamhessam.jsonplaceholder.data.Repository
 import com.iamhessam.jsonplaceholder.data.remote.http.ktor.dto.CommentDTO
 import com.iamhessam.jsonplaceholder.data.remote.http.ktor.router.Post
@@ -48,7 +47,6 @@ class HomeProcessor(override var processorType: HomeProcessorType) :
                     }.body()
 
                 val commentEntities = CommentMapper().mapDtoListToEntityList(response)
-                Log.d("sample Log", "${commentEntities.size}")
                 emit(HomeResult.Success(commentEntities))
 
             } catch (e: ArashniaException) {

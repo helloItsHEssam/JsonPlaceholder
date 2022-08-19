@@ -27,7 +27,7 @@ class KtorUnitTest {
                 )
             }
             val apiClient = KtorClient()
-            apiClient.setEngine(mockEngine)
+            apiClient.setEngineForTest(mockEngine)
 
             val path = Post.Id.Comments(Post.Id(id = 1))
             val response: String = apiClient.httpClient.get(path).body()
@@ -46,7 +46,7 @@ class KtorUnitTest {
                 )
             }
             val apiClient = KtorClient()
-            apiClient.setEngine(mockEngine)
+            apiClient.setEngineForTest(mockEngine)
 
             val path = Post.Id.Comments(Post.Id(id = 1))
             apiClient.httpClient.get(path)
@@ -65,7 +65,7 @@ class KtorUnitTest {
                 )
             }
             val apiClient = KtorClient()
-            apiClient.setEngine(mockEngine)
+            apiClient.setEngineForTest(mockEngine)
 
             val path = Post.Id.Comments(Post.Id(id = 1))
             val comments: List<CommentDTO> = apiClient.httpClient.get(path).body()
