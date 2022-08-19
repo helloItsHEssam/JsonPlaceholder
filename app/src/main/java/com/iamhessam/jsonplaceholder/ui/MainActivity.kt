@@ -1,7 +1,6 @@
 package com.iamhessam.jsonplaceholder.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.collectAsState
@@ -26,7 +25,6 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val activeColor = userSettings.activeColor.collectAsState(initial = ActiveColor.System)
-            Log.d("HEssam THEME Activity", activeColor.value.toString())
 
             JsonPlaceholderTheme(
                 activeColor = activeColor.value,

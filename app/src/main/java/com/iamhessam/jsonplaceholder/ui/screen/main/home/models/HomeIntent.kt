@@ -1,45 +1,42 @@
 package com.iamhessam.jsonplaceholder.ui.screen.main.home.models
 
+import com.iamhessam.jsonplaceholder.data.local.db.room.entity.CommentEntity
 import com.iamhessam.jsonplaceholder.mvi.*
+import com.iamhessam.jsonplaceholder.utils.exception.ArashniaException
 
 sealed class HomeResult : MviResult {
     object Loading : HomeResult()
-    data class Error(val message: String) : HomeResult()
-    data class Success(val response: String) : HomeResult()
+    data class Error(val error: ArashniaException) : HomeResult()
+    data class Success(val response: List<CommentEntity>) : HomeResult()
 }
 
 sealed class HomeAction : MviAction<HomeResult, HomeProcessorType, HomeProcessor> {
-    object Refresh : HomeAction()
     object Init : HomeAction()
     data class LoadComment(val commentId: Int) : HomeAction()
-    object Cancel : HomeAction()
+    object FetchComment : HomeAction()
 
     override fun mapToProcessor(): HomeProcessor = when (this) {
-        is Refresh -> HomeProcessor(HomeProcessorType.Refresh)
         is LoadComment -> HomeProcessor(HomeProcessorType.Init)
         is Init -> HomeProcessor(HomeProcessorType.Init)
-        is Cancel -> HomeProcessor(HomeProcessorType.Cancel)
+        is FetchComment -> HomeProcessor(HomeProcessorType.FetchComment)
     }
 }
 
 sealed class HomeIntent : MviIntent<HomeResult, HomeProcessorType, HomeProcessor, HomeAction> {
     object Initial : HomeIntent()
-    object PullToRefresh : HomeIntent()
     data class LoadComment(val commentId: Int) : HomeIntent()
-    object Cancel : HomeIntent()
+    object FetchComment : HomeIntent()
 
     override fun hashCode(): Int = when (this) {
         is Initial -> 1
-        is PullToRefresh -> 2
+        is FetchComment -> 2
         is LoadComment -> 3 + commentId.hashCode()
-        is Cancel -> 4
     }
 
     override fun mapToAction(): HomeAction = when (this) {
         is Initial -> HomeAction.Init
-        is PullToRefresh -> HomeAction.Refresh
+        is FetchComment -> HomeAction.FetchComment
         is LoadComment -> HomeAction.LoadComment(this.commentId)
-        is Cancel -> HomeAction.Cancel
     }
 
     override fun equals(other: Any?): Boolean {
@@ -49,8 +46,8 @@ sealed class HomeIntent : MviIntent<HomeResult, HomeProcessorType, HomeProcessor
 
 data class HomeViewState(
     val refreshing: Boolean = true,
-    val data: List<String>? = null,
-    val error: String? = null
+    val data: List<CommentEntity>? = null,
+    val error: ArashniaException? = null
 ) : MviViewState {
 
     companion object {
@@ -64,12 +61,12 @@ data class HomeViewState(
                     state.copy(
                         refreshing = false,
                         error = null,
-                        data = listOf(result.response)
+                        data = result.response
                     )
                 }
                 is HomeResult.Error -> state.copy(
                     refreshing = false,
-                    error = result.message
+                    error = result.error
                 )
             }
         }
