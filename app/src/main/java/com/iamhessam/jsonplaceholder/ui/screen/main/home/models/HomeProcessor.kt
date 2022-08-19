@@ -48,7 +48,6 @@ class HomeProcessor(override var processorType: HomeProcessorType) :
 
                 val commentEntities = CommentMapper().mapDtoListToEntityList(response)
                 emit(HomeResult.Success(commentEntities))
-
             } catch (e: ArashniaException) {
                 emit(HomeResult.Error(e))
             }

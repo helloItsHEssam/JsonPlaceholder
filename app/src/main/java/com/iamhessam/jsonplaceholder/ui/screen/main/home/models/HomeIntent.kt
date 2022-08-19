@@ -13,7 +13,7 @@ sealed class HomeResult : MviResult {
 sealed class HomeAction : MviAction<HomeResult, HomeProcessorType, HomeProcessor> {
     object Init : HomeAction()
     data class LoadComment(val commentId: Int) : HomeAction()
-    object FetchComment: HomeAction()
+    object FetchComment : HomeAction()
 
     override fun mapToProcessor(): HomeProcessor = when (this) {
         is LoadComment -> HomeProcessor(HomeProcessorType.Init)

@@ -1,6 +1,5 @@
 package com.iamhessam.jsonplaceholder.data.remote.http.ktor.engine
 
-import com.iamhessam.jsonplaceholder.BuildConfig
 import com.iamhessam.jsonplaceholder.data.remote.http.ktor.plugin.KtorLogging
 import com.iamhessam.jsonplaceholder.data.remote.http.ktor.plugin.ServerErrorHandler
 import com.iamhessam.jsonplaceholder.utils.constant.AppConfig
@@ -99,10 +98,12 @@ class KtorClient {
 
     private fun installJsonResponse(client: HttpClientConfig<CIOEngineConfig>) {
         client.install(ContentNegotiation) {
-            json(Json {
-                prettyPrint = true
-                isLenient = true
-            })
+            json(
+                Json {
+                    prettyPrint = true
+                    isLenient = true
+                }
+            )
         }
     }
 

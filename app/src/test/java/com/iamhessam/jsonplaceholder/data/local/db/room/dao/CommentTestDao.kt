@@ -36,7 +36,7 @@ class CommentTestDao {
 
     @Test
     fun insertTest() {
-        val commentEntity = CommentEntity(1,"hello")
+        val commentEntity = CommentEntity(1, "hello")
         runBlocking {
             val id = commentDao.save(commentEntity)
             Assert.assertEquals(1, id)
@@ -45,7 +45,7 @@ class CommentTestDao {
 
     @Test
     fun updateTest() {
-        val commentEntity = CommentEntity(1,"hello")
+        val commentEntity = CommentEntity(1, "hello")
         runBlocking {
             commentDao.save(commentEntity)
             commentEntity.comment = "hello2"

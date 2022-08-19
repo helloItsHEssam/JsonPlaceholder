@@ -13,5 +13,4 @@ object AppConfig {
         "Product" -> "user agent for product"
         else -> "user agent for develop"
     }
-
 }
