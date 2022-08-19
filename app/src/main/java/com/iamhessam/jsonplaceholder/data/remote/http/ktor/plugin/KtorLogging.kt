@@ -9,7 +9,7 @@ class KtorLogging: Logger {
         const val TAG = "KtorLogging"
     }
 
-    override fun log(message: String) {
+    override fun log(message : String) {
         Log.d(TAG, message)
     }
 }
