@@ -5,6 +5,7 @@ import com.iamhessam.jsonplaceholder.data.remote.http.ktor.plugin.KtorLogging
 import com.iamhessam.jsonplaceholder.data.remote.http.ktor.plugin.ServerErrorHandler
 import com.iamhessam.jsonplaceholder.utils.constant.AppConfig
 import io.ktor.client.*
+import io.ktor.client.engine.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -22,6 +23,31 @@ class KtorClient {
 
     init {
         configureHttpClient()
+    }
+
+    public fun setEngine(engine: HttpClientEngine) {
+        httpClient = HttpClient(engine) {
+            install(Resources)
+
+            install(ContentNegotiation) {
+                json()
+            }
+
+            install(UserAgent) {
+                agent = AppConfig.userAgent
+            }
+
+            HttpResponseValidator {
+                validateResponse {
+                    if (it.status.value >= 300) {
+                        // TODO: complete here after get error data from server! :-)
+//                    val customErrorMessage: CommentDTO = exceptionResponse.body()
+                        val handler = ServerErrorHandler()
+                        throw handler(it.status.value, "Error")
+                    }
+                }
+            }
+        }
     }
 
     private fun configureHttpClient() {
